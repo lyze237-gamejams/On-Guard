@@ -29,9 +29,12 @@ public class Map extends Actor {
     @Getter
     private IntVector2 startPoint, finishPoint;
 
+    @Getter
     private ArrayList<IntVector2> pathPoints = new ArrayList<>();
 
+    @Getter
     private int mapTileWidth, mapTileHeight;
+    @Getter
     private int tileWidth, tileHeight;
 
     public Map() {
@@ -57,8 +60,9 @@ public class Map extends Actor {
 
     private void parseDirections() {
         var directions = (TiledMapTileLayer) map.getLayers().get("Directions");
+        directions.setVisible(false);
 
-        var currentPosition = startPoint;
+        var currentPosition = new IntVector2(startPoint);
         var currentDirection = Direction.DOWN;
         pathPoints.add(new IntVector2(currentPosition));
         do {
@@ -68,7 +72,7 @@ public class Map extends Actor {
                 var type = cell.getTile().getProperties().get("type", String.class);
                 if (Type.DIRECTION.getValue().equals(type)) {
                     var newDirection = cell.getTile().getProperties().get("direction", Integer.class);
-                    currentDirection = Arrays.stream(Direction.values()).filter(direction -> direction.getValue() == newDirection).findFirst().get();
+                    currentDirection = Arrays.stream(Direction.values()).filter(direction -> direction.getValue() == newDirection).findFirst().orElseThrow(() -> new IllegalArgumentException("Unknown direction in " + currentPosition.toString()));
                 } else {
                     logger.info("Unknown type on directions layer {0}", type);
                 }
@@ -82,6 +86,8 @@ public class Map extends Actor {
 
     private void parseMetadata() {
         var metadata = (TiledMapTileLayer) map.getLayers().get("Metadata");
+        metadata.setVisible(false);
+
         for (int y = 0; y < metadata.getHeight(); y++) {
             for (int x = 0; x < metadata.getWidth(); x++) {
                 var cell = metadata.getCell(x, y);
