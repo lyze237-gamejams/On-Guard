@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.2" tiledversion="1.3.5" orientation="orthogonal" renderorder="left-up" width="20" height="18" tilewidth="8" tileheight="8" infinite="0" nextlayerid="5" nextobjectid="1">
  <tileset firstgid="1" name="Basic" tilewidth="8" tileheight="8" tilecount="8" columns="4">
-  <image source="../tilesets/Basic.png" width="32" height="16"/>
+  <image source="tilesets/Basic.png" width="32" height="16"/>
  </tileset>
  <tileset firstgid="9" name="Metadata" tilewidth="8" tileheight="8" tilecount="8" columns="4">
-  <image source="../tilesets/Metadata.png" width="32" height="16"/>
+  <image source="tilesets/Metadata.png" width="32" height="16"/>
   <tile id="0">
    <properties>
     <property name="direction" type="int" value="0"/>

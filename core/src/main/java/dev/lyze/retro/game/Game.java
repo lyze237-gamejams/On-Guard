@@ -3,7 +3,11 @@ package dev.lyze.retro.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.github.czyzby.kiwi.log.Logger;
@@ -20,7 +24,7 @@ public class Game extends Stage {
     private final AssetManager assMan = new AssetManager();
 
     @Getter
-    private Map map = new Map();
+    private Map map;
 
     @Getter
     private ArrayList<Unit> units = new ArrayList<>();
@@ -34,7 +38,7 @@ public class Game extends Stage {
 
         loadAssets();
 
-        addActor(map);
+        addActor(map = new Map(this));
 
         addUnit(new SnakeUnit(this, false));
         addUnit(new SnakeUnit(this, true));
@@ -49,6 +53,10 @@ public class Game extends Stage {
     }
 
     private void loadAssets() {
+        assMan.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
+
+        assMan.load(Map.RESOURCE_PATH, TiledMap.class);
+
         assMan.load(SkullUnit.RESOURCE_PATH, Texture.class);
         assMan.load(HumanUnit.RESOURCE_PATH, Texture.class);
         assMan.load(MageUnit.RESOURCE_PATH, Texture.class);
