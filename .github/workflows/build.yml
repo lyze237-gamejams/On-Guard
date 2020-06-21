@@ -78,7 +78,7 @@ jobs:
 
       - run: ./butler push Retro-Towerdefence_linux.jar lyze237/retro-towerdefence:linux-jar
 
-      - run: ./butler push lwjgl3/build/jpackage/RetroTowerdefence lyze237/hoot-n-slay:linux-image
+      - run: ./butler push lwjgl3/build/jpackage/RetroTowerdefence lyze237/retro-towerdefence:linux-image
 
       - run: ./butler push Retro-Towerdefence.deb lyze237/retro-towerdefence:linux-deb
       - run: ./butler push Retro-Towerdefence.rpm lyze237/retro-towerdefence:linux-rpm
