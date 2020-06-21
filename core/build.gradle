@@ -1,0 +1,10 @@
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+dependencies {
+	api "com.badlogicgames.gdx:gdx:$gdxVersion"
+	api "com.github.czyzby:gdx-kiwi:$kiwiVersion"
+	api "com.kotcrab.vis:vis-ui:$visUiVersion"
+
+	implementation "org.projectlombok:lombok:$lombok"
+	annotationProcessor "org.projectlombok:lombok:$lombok"
+}

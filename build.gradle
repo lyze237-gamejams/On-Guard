@@ -1,0 +1,46 @@
+buildscript {
+	repositories {
+		mavenLocal()
+		mavenCentral()
+		google()
+		maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+		jcenter()
+	}
+	dependencies {
+		classpath "org.wisepersist:gwt-gradle-plugin:$gwtPluginVersion"
+	}
+}
+
+allprojects {
+	apply plugin: 'idea'
+}
+
+def getGitHash = { ->
+	def stdout = new ByteArrayOutputStream()
+	exec {
+		commandLine 'git', 'rev-list', '--count', 'HEAD'
+		standardOutput = stdout
+	}
+	return stdout.toString().trim()
+}
+
+configure(subprojects) {
+	apply plugin: 'java-library'
+	sourceCompatibility = 11
+	compileJava {
+		options.incremental = true
+	}
+}
+
+subprojects {
+	version = '0.0.' + getGitHash()
+	ext.appName = 'RetroTowerdefence'
+	repositories {
+		mavenLocal()
+		mavenCentral()
+		maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+		maven { url 'https://jitpack.io' }
+		jcenter()
+	}
+}
+
