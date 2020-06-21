@@ -1,22 +1,28 @@
 package dev.lyze.retro.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.github.czyzby.kiwi.log.Logger;
+import com.github.czyzby.kiwi.log.LoggerService;
 import dev.lyze.retro.game.actors.Map;
-import dev.lyze.retro.game.units.*;
+import dev.lyze.retro.game.actors.units.*;
 import lombok.Getter;
 
 import java.util.ArrayList;
 
 public class Game extends Stage {
+    private static final Logger logger = LoggerService.forClass(Game.class);
     @Getter
     private final AssetManager assMan = new AssetManager();
 
     @Getter
     private Map map = new Map();
 
+    @Getter
     private ArrayList<Unit> units = new ArrayList<>();
 
     private float timeSinceLastTick;
@@ -30,15 +36,16 @@ public class Game extends Stage {
 
         addActor(map);
 
-        SnakeUnit snake = new SnakeUnit(this, false);
-        units.add(snake);
-        addActor(snake);
+        addUnit(new SnakeUnit(this, false));
+        addUnit(new SnakeUnit(this, true));
 
-        SnakeUnit snake2 = new SnakeUnit(this, true);
-        units.add(snake2);
-        addActor(snake2);
+        addUnit(new HumanUnit(this, false));
+        addUnit(new HumanUnit(this, true));
+    }
 
-        snake.setPosition(map.getStartPoint().getX() * map.getTileWidth(), map.getStartPoint().getY() * map.getTileHeight());
+    private void addUnit(Unit unit) {
+        units.add(unit);
+        addActor(unit);
     }
 
     private void loadAssets() {
@@ -54,10 +61,26 @@ public class Game extends Stage {
     public void act(float delta) {
         super.act(delta);
 
-        if ((timeSinceLastTick += delta) > roundTickTime) {
+        var localRoundTickTime = roundTickTime;
+        var localUnitTickTime = unitTickTime;
+        if (Gdx.input.isKeyPressed(Input.Keys.F12))  {
+            localRoundTickTime /= 4f;
+            localUnitTickTime /= 4f;
+        }
+
+        if ((timeSinceLastTick += delta) > localRoundTickTime) {
             timeSinceLastTick = 0;
 
-            units.forEach(unit -> unit.tick(unitTickTime));
+            for (int i = units.size() - 1; i >= 0; i--) {
+                Unit unit = units.get(i);
+                if (unit.isDead()) {
+                    units.remove(i);
+                    getActors().removeValue(unit, true);
+                    continue;
+                }
+
+                unit.tick(localUnitTickTime);
+            }
         }
     }
 }

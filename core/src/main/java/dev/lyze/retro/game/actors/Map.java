@@ -129,4 +129,20 @@ public class Map extends Actor {
             shapes.rect(point.getX() * tileWidth, point.getY() * tileHeight, tileWidth, tileHeight);
         }
     }
+
+    public IntVector2 convertFromPixelCoords(IntVector2 pixelCoords) {
+        return new IntVector2(pixelCoords.getX() / tileWidth, pixelCoords.getY() / tileHeight);
+    }
+
+    public IntVector2 convertToPixelCoords(IntVector2 mapCoords) {
+        return new IntVector2(mapCoords.getX() * tileWidth, mapCoords.getY() * tileHeight);
+    }
+
+    public boolean mapCoordsEqualsPixelCoords(IntVector2 mapCoords, IntVector2 pixelCoords) {
+        return mapCoordsEqualsPixelCoords(mapCoords.getX(), mapCoords.getY(), pixelCoords.getX(), pixelCoords.getY());
+    }
+
+    public boolean mapCoordsEqualsPixelCoords(int mapX, int mapY, int pixelX, int pixelY) {
+        return mapX * tileWidth == pixelX && mapY * tileHeight == pixelY;
+    }
 }

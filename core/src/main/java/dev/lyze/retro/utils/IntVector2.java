@@ -30,6 +30,13 @@ public class IntVector2 implements Pool.Poolable {
         return set(this.x + x, this.y + y);
     }
 
+    public IntVector2 mul(int mulXWith, int mulYWith) {
+        x *= mulXWith;
+        y *= mulYWith;
+
+        return this;
+    }
+
     @Override
     public void reset() {
         set(0, 0);
