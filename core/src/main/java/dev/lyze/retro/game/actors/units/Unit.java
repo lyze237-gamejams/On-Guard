@@ -77,4 +77,12 @@ public abstract class Unit extends Actor {
     public boolean isDead() {
         return health <= 0;
     }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "{" +
+                "playerUnit=" + playerUnit +
+                ", health=" + health +
+                '}';
+    }
 }

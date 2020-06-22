@@ -19,13 +19,12 @@ public class AttackBehaviour extends Behaviour {
     public boolean tick(float duration) {
         var nextPathPoint = unit.getPathPoints().get(unit.getCurrentPoint() + 1);
         for (Unit loopUnit : unit.getGame().getUnits()) {
-            if (unit.isPlayerUnit() == loopUnit.isPlayerUnit()) // don't attack own units
-                continue;
-
-            if (unit.getGame().getMap().mapCoordsEqualsPixelCoords(nextPathPoint.getX(), nextPathPoint.getY(), (int) loopUnit.getX(), (int) loopUnit.getY())) {
-                logger.info("ATTACKING");
-                loopUnit.damage(damage);
-                return true;
+            if (unit.isPlayerUnit() != loopUnit.isPlayerUnit()) {
+                if (unit.getGame().getMap().mapCoordsEqualsPixelCoords(nextPathPoint.getX(), nextPathPoint.getY(), (int) loopUnit.getX(), (int) loopUnit.getY())) {
+                    logger.info(unit.toString() + " hit " + loopUnit.toString());
+                    loopUnit.damage(damage);
+                    return true;
+                }
             }
         }
 

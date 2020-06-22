@@ -8,6 +8,7 @@ import com.github.czyzby.kiwi.log.Logger;
 import com.github.czyzby.kiwi.log.LoggerService;
 import dev.lyze.retro.game.actors.Map;
 import dev.lyze.retro.game.actors.units.HumanUnit;
+import dev.lyze.retro.game.actors.units.MageUnit;
 import dev.lyze.retro.game.actors.units.SnakeUnit;
 import dev.lyze.retro.game.actors.units.Unit;
 import lombok.Getter;
@@ -36,10 +37,10 @@ public class Game extends Stage {
         addActor(map = new Map(this));
 
         addUnit(new SnakeUnit(this, false));
-        addUnit(new SnakeUnit(this, true));
-
         addUnit(new HumanUnit(this, false));
-        addUnit(new HumanUnit(this, true));
+
+        addUnit(new SnakeUnit(this, true));
+        addUnit(new MageUnit(this, true));
     }
 
     private void addUnit(Unit unit) {
