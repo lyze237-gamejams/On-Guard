@@ -41,7 +41,7 @@ public class Map extends Actor {
     private int tileWidth, tileHeight;
 
     public Map(Game game) {
-        map = game.getAssMan().get(RESOURCE_PATH);
+        map = game.getAss().get(RESOURCE_PATH);
         renderer = new OrthogonalTiledMapRendererBleeding(map, 1);
 
         parseMap();

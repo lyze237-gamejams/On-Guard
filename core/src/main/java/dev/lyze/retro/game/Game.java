@@ -2,26 +2,20 @@ package dev.lyze.retro.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.github.czyzby.kiwi.log.Logger;
 import com.github.czyzby.kiwi.log.LoggerService;
 import dev.lyze.retro.game.actors.Map;
-import dev.lyze.retro.game.actors.units.*;
+import dev.lyze.retro.game.actors.units.HumanUnit;
+import dev.lyze.retro.game.actors.units.SnakeUnit;
+import dev.lyze.retro.game.actors.units.Unit;
 import lombok.Getter;
 
 import java.util.ArrayList;
 
 public class Game extends Stage {
     private static final Logger logger = LoggerService.forClass(Game.class);
-    @Getter
-    private final AssetManager assMan = new AssetManager();
 
     @Getter
     private Map map;
@@ -29,14 +23,15 @@ public class Game extends Stage {
     @Getter
     private ArrayList<Unit> units = new ArrayList<>();
 
+    @Getter
+    private Assets ass = new Assets();
+
     private float timeSinceLastTick;
     private float roundTickTime = 1f;
     private float unitTickTime = 0.7f;
 
     public Game() {
         super(new FitViewport(160, 144));
-
-        loadAssets();
 
         addActor(map = new Map(this));
 
@@ -50,19 +45,6 @@ public class Game extends Stage {
     private void addUnit(Unit unit) {
         units.add(unit);
         addActor(unit);
-    }
-
-    private void loadAssets() {
-        assMan.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
-
-        assMan.load(Map.RESOURCE_PATH, TiledMap.class);
-
-        assMan.load(SkullUnit.RESOURCE_PATH, Texture.class);
-        assMan.load(HumanUnit.RESOURCE_PATH, Texture.class);
-        assMan.load(MageUnit.RESOURCE_PATH, Texture.class);
-        assMan.load(SnakeUnit.RESOURCE_PATH, Texture.class);
-
-        assMan.finishLoading();
     }
 
     @Override

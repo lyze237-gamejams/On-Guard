@@ -1,8 +1,8 @@
 package dev.lyze.retro.game.actors.units;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import dev.lyze.retro.game.Game;
 import dev.lyze.retro.game.actors.units.behaviours.Behaviour;
@@ -32,7 +32,7 @@ public abstract class Unit extends Actor {
     @Getter
     private int health;
 
-    public Unit(Game game, Texture texture, boolean playerUnit, int health) {
+    public Unit(Game game, TextureAtlas.AtlasRegion texture, boolean playerUnit, int health) {
         this.game = game;
         this.sprite = new Sprite(texture);
         this.playerUnit = playerUnit;
@@ -44,7 +44,7 @@ public abstract class Unit extends Actor {
             sprite.flip(false, true);
         }
 
-        setBounds(pathPoints.get(0).getX() * game.getMap().getTileWidth(), pathPoints.get(0).getY() * game.getMap().getTileHeight(), texture.getWidth(), texture.getHeight());
+        setBounds(pathPoints.get(0).getX() * game.getMap().getTileWidth(), pathPoints.get(0).getY() * game.getMap().getTileHeight(), sprite.getWidth(), sprite.getHeight());
     }
 
     public void addBehaviour(Behaviour behaviour) {

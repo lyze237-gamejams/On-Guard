@@ -72,3 +72,4 @@ nb-configuration.xml
 /native/**/obj
 
 /Beaksels/src/main/resources/jar
+/assets/atlases
