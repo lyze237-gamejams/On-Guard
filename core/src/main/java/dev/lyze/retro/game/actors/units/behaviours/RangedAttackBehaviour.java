@@ -1,6 +1,10 @@
 package dev.lyze.retro.game.actors.units.behaviours;
 
+import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import com.badlogic.gdx.scenes.scene2d.actions.ScaleByAction;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.github.czyzby.kiwi.log.Logger;
 import com.github.czyzby.kiwi.log.LoggerService;
 import dev.lyze.retro.game.actors.units.Unit;
@@ -36,9 +40,11 @@ public class RangedAttackBehaviour extends Behaviour {
         }
 
         if (hit) {
+            bobUnit(duration);
+
             for (int i = 1; i <= fields; i++) {
                 var nextPathPoint = unit.getGame().getMap().convertToPixelCoords(unit.getPathPoints().get(unit.getCurrentPoint() + i));
-                unit.getGame().spawnParticle(unit.getGame().getAss().getRangedAttackParticle(), nextPathPoint.getX(),nextPathPoint.getY(), 0.2f);
+                unit.getGame().spawnParticle(unit.getGame().getAss().getRangedAttackParticle(), nextPathPoint.getX(),nextPathPoint.getY(), duration * 0.2f);
             }
         }
 

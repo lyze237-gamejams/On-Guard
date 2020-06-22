@@ -26,20 +26,7 @@ public class AttackBehaviour extends Behaviour {
                     logger.info(unit.toString() + " hit " + loopUnit.toString());
                     loopUnit.damage(damage);
 
-                    var sequence = new SequenceAction();
-                    var up = new ScaleByAction();
-                    var down = new ScaleByAction();
-
-                    up.setAmount(0.2f);
-                    up.setDuration(0.1f);
-
-                    down.setAmount(-0.2f);
-                    down.setDuration(0.1f);
-
-                    sequence.addAction(up);
-                    sequence.addAction(down);
-
-                    unit.addAction(sequence);
+                    bobUnit(duration);
 
                     return true;
                 }
