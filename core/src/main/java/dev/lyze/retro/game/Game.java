@@ -2,7 +2,12 @@ package dev.lyze.retro.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.github.czyzby.kiwi.log.Logger;
 import com.github.czyzby.kiwi.log.LoggerService;
@@ -73,5 +78,16 @@ public class Game extends Stage {
                 unit.tick(localUnitTickTime);
             }
         }
+    }
+
+    public void spawnParticle(TextureAtlas.AtlasRegion texture, float x, float y, float duration) {
+        var particle = new Image(texture);
+        particle.setPosition(x, y);
+        addActor(particle);
+
+        var action = new AlphaAction();
+        action.setDuration(duration);
+        action.setAlpha(0);
+        particle.addAction(action);
     }
 }

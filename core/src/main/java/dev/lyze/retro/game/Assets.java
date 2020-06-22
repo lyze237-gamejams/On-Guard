@@ -16,6 +16,9 @@ public class Assets {
     @Getter
     private TextureAtlas.AtlasRegion snakeUnit, humanUnit, skullUnit, mageUnit;
 
+    @Getter
+    private TextureAtlas.AtlasRegion hitParticle, rangedAttackParticle;
+
     public Assets() {
         setupAssetManager();
         extractTextureRegions();
@@ -37,6 +40,9 @@ public class Assets {
         skullUnit = unitsAtlas.findRegion("skull");
         humanUnit = unitsAtlas.findRegion("human");
         mageUnit = unitsAtlas.findRegion("mage");
+
+        hitParticle = unitsAtlas.findRegion("hitParticle");
+        rangedAttackParticle = unitsAtlas.findRegion("rangedAttackParticle");
     }
 
     public synchronized <T> T get (String fileName) {
