@@ -10,7 +10,7 @@ public class SnakeUnit extends Unit {
     private static final Logger logger = LoggerService.forClass(SnakeUnit.class);
 
     public SnakeUnit(Game game, boolean playerUnit) {
-        super(game, game.getAss().getSnakeUnit(), playerUnit, 7);
+        super(game, game.getAss().getSnakeUnit(), playerUnit, 1);
 
         addBehaviour(new AttackBehaviour(this, 1));
         addBehaviour(new MovementBehaviour(this, 0));
