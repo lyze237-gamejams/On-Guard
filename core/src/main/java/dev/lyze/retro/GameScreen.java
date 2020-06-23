@@ -19,17 +19,16 @@ public class GameScreen implements Screen {
 	private SpriteBatch batch;
 
 	public GameScreen() {
-	    setupUi();
-	    setupGame();
+		setupGame();
+		setupUi();
 	}
 
 	private void setupUi() {
-	    ui = new GameUi();
+	    ui = new GameUi(game);
 	}
 
 	private void setupGame() {
 		game = new Game();
-
 	}
 
 	@Override

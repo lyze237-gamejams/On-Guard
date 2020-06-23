@@ -25,7 +25,7 @@ Buttons/Guard/Guard_Button_Down
   orig: 30, 23
   offset: 0, 0
   index: -1
-Buttons/Guard/Guard_Button_up
+Buttons/Guard/Guard_Button_Up
   rotate: false
   xy: 98, 7
   size: 30, 23
@@ -60,42 +60,42 @@ Buttons/Samurai/Samurai_Button_Up
   orig: 30, 23
   offset: 0, 0
   index: -1
-Buttons/Snake/Snake_Button_down
+Buttons/Snake/Snake_Button_Down
   rotate: false
   xy: 258, 7
   size: 30, 23
   orig: 30, 23
   offset: 0, 0
   index: -1
-Buttons/Snake/Snake_Button_up
+Buttons/Snake/Snake_Button_Up
   rotate: false
   xy: 290, 7
   size: 30, 23
   orig: 30, 23
   offset: 0, 0
   index: -1
-Buttons/Sound/Sound_Button_OFF
+Buttons/Sound/Sound_Button_Off
   rotate: false
   xy: 642, 7
   size: 30, 23
   orig: 30, 23
   offset: 0, 0
   index: -1
-Buttons/Sound/Sound_Button_ON
+Buttons/Sound/Sound_Button_On
   rotate: false
   xy: 674, 7
   size: 30, 23
   orig: 30, 23
   offset: 0, 0
   index: -1
-Buttons/Stats/Stat_Coins1
+Buttons/Stats/Stat_Coins
   rotate: false
   xy: 706, 8
   size: 30, 22
   orig: 30, 22
   offset: 0, 0
   index: -1
-Buttons/Stats/Stat_Health1
+Buttons/Stats/Stat_Health
   rotate: false
   xy: 738, 8
   size: 30, 22
