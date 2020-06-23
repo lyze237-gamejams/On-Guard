@@ -3,9 +3,12 @@ package dev.lyze.retro.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g3d.particles.influencers.RegionInfluencer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.reflect.ClassReflection;
+import com.badlogic.gdx.utils.reflect.ReflectionException;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.github.czyzby.kiwi.log.Logger;
 import com.github.czyzby.kiwi.log.LoggerService;
@@ -19,9 +22,7 @@ import dev.lyze.retro.game.actors.units.Unit;
 import lombok.Getter;
 import lombok.SneakyThrows;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 public class Game extends Stage {
     private static final Logger logger = LoggerService.forClass(Game.class);
@@ -32,8 +33,8 @@ public class Game extends Stage {
     @Getter
     private ArrayList<Unit> roundUnits = new ArrayList<>();
 
-    private Queue<Class<? extends Unit>> playerRoundUnitsToSpawn = new LinkedList<>();
-    private Queue<Class<? extends Unit>> enemyRoundUnitsToSpawn = new LinkedList<>();
+    private ArrayList<Class<? extends Unit>> playerRoundUnitsToSpawn = new ArrayList<>();
+    private ArrayList<Class<? extends Unit>> enemyRoundUnitsToSpawn = new ArrayList<>();
 
     @Getter
     private ArrayList<Class<? extends Unit>> playerUnits = new ArrayList<>();
@@ -44,6 +45,8 @@ public class Game extends Stage {
     private float timeSinceLastTick;
     private float roundTickTime = 1f;
     private float unitTickTime = 0.7f;
+
+    private Random random = new Random(1);
 
     public Game() {
         super(new FitViewport(160, 144));
@@ -100,7 +103,6 @@ public class Game extends Stage {
         getActors().removeValue(unit, true);
     }
 
-    @SneakyThrows
     private void startRound() {
         logger.info("Starting round");
 
@@ -108,27 +110,36 @@ public class Game extends Stage {
             enemyRoundUnitsToSpawn.add(playerUnit);
             playerRoundUnitsToSpawn.add(playerUnit);
         }
+
+        Collections.shuffle(enemyRoundUnitsToSpawn);
+        Collections.shuffle(playerRoundUnitsToSpawn);
     }
 
-    @SneakyThrows
     private void spawnRoundUnit() {
         if (!enemyRoundUnitsToSpawn.isEmpty())
         {
-            var unitClazz = enemyRoundUnitsToSpawn.poll();
+            var unitClazz = enemyRoundUnitsToSpawn.remove(0);
             logger.info("Spawning " + unitClazz);
-            var unit = unitClazz.getDeclaredConstructor(Game.class, boolean.class).newInstance(this, false);
+            try {
+                Unit unit = (Unit) ClassReflection.getConstructor(unitClazz, Game.class, boolean.class).newInstance(this, false);
+                roundUnits.add(unit);
+                addActor(unit);
+            } catch (ReflectionException e) {
+                e.printStackTrace();
+            }
 
-            roundUnits.add(unit);
-            addActor(unit);
         }
         if (!playerRoundUnitsToSpawn.isEmpty())
         {
-            var unitClazz = playerRoundUnitsToSpawn.poll();
+            var unitClazz = playerRoundUnitsToSpawn.remove(0);
             logger.info("Spawning " + unitClazz);
-            var unit = unitClazz.getDeclaredConstructor(Game.class, boolean.class).newInstance(this, true);
-
-            roundUnits.add(unit);
-            addActor(unit);
+            try {
+                Unit unit = (Unit) ClassReflection.getConstructor(unitClazz, Game.class, boolean.class).newInstance(this, true);
+                roundUnits.add(unit);
+                addActor(unit);
+            } catch (ReflectionException e) {
+                e.printStackTrace();
+            }
         }
     }
 
