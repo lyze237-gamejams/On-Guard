@@ -1,7 +1,5 @@
 package dev.lyze.retro.game.actors.units.behaviours;
 
-import com.badlogic.gdx.scenes.scene2d.actions.ScaleByAction;
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.github.czyzby.kiwi.log.Logger;
 import com.github.czyzby.kiwi.log.LoggerService;
 import dev.lyze.retro.game.actors.units.Unit;
@@ -19,8 +17,11 @@ public class AttackBehaviour extends Behaviour {
 
     @Override
     public boolean tick(float duration) {
+        if (unit.getCurrentPoint() + 1 >= unit.getPathPoints().size())
+            return false;
+
         var nextPathPoint = unit.getPathPoints().get(unit.getCurrentPoint() + 1);
-        for (Unit loopUnit : unit.getGame().getUnits()) {
+        for (Unit loopUnit : unit.getGame().getRoundUnits()) {
             if (unit.isPlayerUnit() != loopUnit.isPlayerUnit()) {
                 if (unit.getGame().getMap().mapCoordsEqualsPixelCoords(nextPathPoint.getX(), nextPathPoint.getY(), (int) loopUnit.getX(), (int) loopUnit.getY())) {
                     logger.info(unit.toString() + " hit " + loopUnit.toString());

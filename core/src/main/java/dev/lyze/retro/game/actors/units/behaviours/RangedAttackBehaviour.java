@@ -1,14 +1,8 @@
 package dev.lyze.retro.game.actors.units.behaviours;
 
-import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
-import com.badlogic.gdx.scenes.scene2d.actions.ScaleByAction;
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.github.czyzby.kiwi.log.Logger;
 import com.github.czyzby.kiwi.log.LoggerService;
 import dev.lyze.retro.game.actors.units.Unit;
-import dev.lyze.retro.utils.IntVector2;
 
 public class RangedAttackBehaviour extends Behaviour {
     private static final Logger logger = LoggerService.forClass(RangedAttackBehaviour.class);
@@ -26,7 +20,7 @@ public class RangedAttackBehaviour extends Behaviour {
     public boolean tick(float duration) {
         boolean hit = false;
 
-        for (Unit loopUnit : unit.getGame().getUnits()) {
+        for (Unit loopUnit : unit.getGame().getRoundUnits()) {
             if (unit.isPlayerUnit() != loopUnit.isPlayerUnit()) {
                 for (int i = 1; i <= fields; i++) {
                     var nextPathPoint = unit.getPathPoints().get(unit.getCurrentPoint() + i);

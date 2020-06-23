@@ -16,8 +16,6 @@ public class GameScreen implements Screen {
 	private GameUi ui;
 	private Game game;
 
-	private SpriteBatch batch;
-
 	public GameScreen() {
 		setupGame();
 		setupUi();
