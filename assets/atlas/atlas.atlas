@@ -1,0 +1,216 @@
+
+atlas.png
+size: 1024,32
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Buttons/Ability/Ability_Button_Down
+  rotate: false
+  xy: 2, 7
+  size: 30, 23
+  orig: 30, 23
+  offset: 0, 0
+  index: -1
+Buttons/Ability/Ability_Button_Up
+  rotate: false
+  xy: 34, 7
+  size: 30, 23
+  orig: 30, 23
+  offset: 0, 0
+  index: -1
+Buttons/Guard/Guard_Button_Down
+  rotate: false
+  xy: 66, 7
+  size: 30, 23
+  orig: 30, 23
+  offset: 0, 0
+  index: -1
+Buttons/Guard/Guard_Button_up
+  rotate: false
+  xy: 98, 7
+  size: 30, 23
+  orig: 30, 23
+  offset: 0, 0
+  index: -1
+Buttons/Mage/Mage_Button_Down
+  rotate: false
+  xy: 130, 7
+  size: 30, 23
+  orig: 30, 23
+  offset: 0, 0
+  index: -1
+Buttons/Mage/Mage_Button_Up
+  rotate: false
+  xy: 162, 7
+  size: 30, 23
+  orig: 30, 23
+  offset: 0, 0
+  index: -1
+Buttons/Samurai/Samurai_Button_Down
+  rotate: false
+  xy: 194, 7
+  size: 30, 23
+  orig: 30, 23
+  offset: 0, 0
+  index: -1
+Buttons/Samurai/Samurai_Button_Up
+  rotate: false
+  xy: 226, 7
+  size: 30, 23
+  orig: 30, 23
+  offset: 0, 0
+  index: -1
+Buttons/Snake/Snake_Button_down
+  rotate: false
+  xy: 258, 7
+  size: 30, 23
+  orig: 30, 23
+  offset: 0, 0
+  index: -1
+Buttons/Snake/Snake_Button_up
+  rotate: false
+  xy: 290, 7
+  size: 30, 23
+  orig: 30, 23
+  offset: 0, 0
+  index: -1
+Buttons/Sound/Sound_Button_OFF
+  rotate: false
+  xy: 642, 7
+  size: 30, 23
+  orig: 30, 23
+  offset: 0, 0
+  index: -1
+Buttons/Sound/Sound_Button_ON
+  rotate: false
+  xy: 674, 7
+  size: 30, 23
+  orig: 30, 23
+  offset: 0, 0
+  index: -1
+Buttons/Stats/Stat_Coins1
+  rotate: false
+  xy: 706, 8
+  size: 30, 22
+  orig: 30, 22
+  offset: 0, 0
+  index: -1
+Buttons/Stats/Stat_Health1
+  rotate: false
+  xy: 738, 8
+  size: 30, 22
+  orig: 30, 22
+  offset: 0, 0
+  index: -1
+Buttons/Upgrade/Snake_Upgrade_Down
+  rotate: false
+  xy: 322, 7
+  size: 30, 23
+  orig: 30, 23
+  offset: 0, 0
+  index: 1
+Buttons/Upgrade/Snake_Upgrade_Down
+  rotate: false
+  xy: 354, 7
+  size: 30, 23
+  orig: 30, 23
+  offset: 0, 0
+  index: 2
+Buttons/Upgrade/Snake_Upgrade_Down
+  rotate: false
+  xy: 386, 7
+  size: 30, 23
+  orig: 30, 23
+  offset: 0, 0
+  index: 3
+Buttons/Upgrade/Snake_Upgrade_Down
+  rotate: false
+  xy: 418, 7
+  size: 30, 23
+  orig: 30, 23
+  offset: 0, 0
+  index: 4
+Buttons/Upgrade/Snake_Upgrade_Down
+  rotate: false
+  xy: 450, 7
+  size: 30, 23
+  orig: 30, 23
+  offset: 0, 0
+  index: 5
+Buttons/Upgrade/Snake_Upgrade_Up
+  rotate: false
+  xy: 482, 7
+  size: 30, 23
+  orig: 30, 23
+  offset: 0, 0
+  index: 1
+Buttons/Upgrade/Snake_Upgrade_Up
+  rotate: false
+  xy: 514, 7
+  size: 30, 23
+  orig: 30, 23
+  offset: 0, 0
+  index: 2
+Buttons/Upgrade/Snake_Upgrade_Up
+  rotate: false
+  xy: 546, 7
+  size: 30, 23
+  orig: 30, 23
+  offset: 0, 0
+  index: 3
+Buttons/Upgrade/Snake_Upgrade_Up
+  rotate: false
+  xy: 578, 7
+  size: 30, 23
+  orig: 30, 23
+  offset: 0, 0
+  index: 4
+Buttons/Upgrade/Snake_Upgrade_Up
+  rotate: false
+  xy: 610, 7
+  size: 30, 23
+  orig: 30, 23
+  offset: 0, 0
+  index: 5
+Particles/Hit
+  rotate: false
+  xy: 770, 22
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+Particles/Ranged_Attack
+  rotate: false
+  xy: 780, 22
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+Units/Human
+  rotate: false
+  xy: 770, 12
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+Units/Mage
+  rotate: false
+  xy: 770, 2
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+Units/Skull
+  rotate: false
+  xy: 780, 12
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+Units/Snake
+  rotate: false
+  xy: 780, 2
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1

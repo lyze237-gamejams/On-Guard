@@ -11,7 +11,7 @@ import lombok.Getter;
 public class Assets {
     private final AssetManager assMan = new AssetManager();
 
-    private static final String UNITS_ATLAS_PATH = "atlases/units.atlas";
+    private static final String UNITS_ATLAS_PATH = "atlas/atlas.atlas";
 
     @Getter
     private TextureAtlas.AtlasRegion snakeUnit, humanUnit, skullUnit, mageUnit;
@@ -36,13 +36,13 @@ public class Assets {
 
     private void extractTextureRegions() {
         var unitsAtlas = assMan.get(UNITS_ATLAS_PATH, TextureAtlas.class);
-        snakeUnit = unitsAtlas.findRegion("snake");
-        skullUnit = unitsAtlas.findRegion("skull");
-        humanUnit = unitsAtlas.findRegion("human");
-        mageUnit = unitsAtlas.findRegion("mage");
+        snakeUnit = unitsAtlas.findRegion("Units/Snake");
+        skullUnit = unitsAtlas.findRegion("Units/Skull");
+        humanUnit = unitsAtlas.findRegion("Units/Human");
+        mageUnit = unitsAtlas.findRegion("Units/Mage");
 
-        hitParticle = unitsAtlas.findRegion("hitParticle");
-        rangedAttackParticle = unitsAtlas.findRegion("rangedAttackParticle");
+        hitParticle = unitsAtlas.findRegion("Particles/Hit");
+        rangedAttackParticle = unitsAtlas.findRegion("Particles/Ranged_Attack");
     }
 
     public synchronized <T> T get (String fileName) {
