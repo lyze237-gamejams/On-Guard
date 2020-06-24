@@ -48,6 +48,8 @@ public class Game extends Stage {
 
     private Random random = new Random(1);
 
+    private int roundCounter;
+
     public Game() {
         super(new FitViewport(160, 144));
 
@@ -73,6 +75,9 @@ public class Game extends Stage {
             spawnRoundUnit();
 
             timeSinceLastTick = 0;
+
+            if (roundCounter >= 2) // first round don't shuffle so player wins
+                Collections.shuffle(roundUnits); // shuffle for random who attacks first
 
             for (int i = roundUnits.size() - 1; i >= 0; i--) {
                 Unit unit = roundUnits.get(i);
@@ -104,7 +109,12 @@ public class Game extends Stage {
     }
 
     private void startRound() {
+        if (playerUnits.isEmpty())
+            return;
+
         logger.info("Starting round");
+
+        roundCounter++;
 
         for (Class<? extends Unit> playerUnit : playerUnits) {
             enemyRoundUnitsToSpawn.add(playerUnit);
