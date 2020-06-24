@@ -14,6 +14,7 @@ import com.github.czyzby.kiwi.log.LoggerService;
 import dev.lyze.retro.game.actors.Map;
 import dev.lyze.retro.game.actors.units.Unit;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,7 +49,7 @@ public class Game extends Stage {
     @Getter
     private int health = 100;
 
-    @Getter
+    @Getter @Setter
     private int coins = 10;
 
     public Game() {
