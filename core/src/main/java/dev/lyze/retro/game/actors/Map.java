@@ -22,8 +22,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Map extends Actor {
-    public static final String RESOURCE_PATH = "maps/Test.tmx";
-
     private static final Logger logger = LoggerService.forClass(Map.class);
 
     private final TiledMap map;
@@ -41,7 +39,7 @@ public class Map extends Actor {
     private int tileWidth, tileHeight;
 
     public Map(Game game) {
-        map = game.getAss().get(RESOURCE_PATH);
+        map = game.getAss().getMap();
         renderer = new OrthogonalTiledMapRendererBleeding(map, 1);
 
         parseMap();

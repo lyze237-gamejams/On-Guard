@@ -3,7 +3,6 @@ package dev.lyze.retro.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g3d.particles.influencers.RegionInfluencer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -12,17 +11,14 @@ import com.badlogic.gdx.utils.reflect.ReflectionException;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.github.czyzby.kiwi.log.Logger;
 import com.github.czyzby.kiwi.log.LoggerService;
-import com.github.czyzby.kiwi.util.tuple.DoubleTuple;
-import com.github.czyzby.kiwi.util.tuple.immutable.Pair;
 import dev.lyze.retro.game.actors.Map;
-import dev.lyze.retro.game.actors.units.SamuraiUnit;
-import dev.lyze.retro.game.actors.units.MageUnit;
-import dev.lyze.retro.game.actors.units.SnakeUnit;
 import dev.lyze.retro.game.actors.units.Unit;
 import lombok.Getter;
-import lombok.SneakyThrows;
+import lombok.Setter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
 
 public class Game extends Stage {
     private static final Logger logger = LoggerService.forClass(Game.class);
@@ -43,12 +39,18 @@ public class Game extends Stage {
     private Assets ass = new Assets();
 
     private float timeSinceLastTick;
-    private float roundTickTime = 1f;
-    private float unitTickTime = 0.7f;
+    private float roundTickTime = 0.3f;
+    private float unitTickTime = 0.1f;
 
     private Random random = new Random(1);
 
     private int roundCounter;
+
+    @Getter
+    private int health = 100;
+
+    @Getter @Setter
+    private int coins = 10;
 
     public Game() {
         super(new FitViewport(160, 144));
@@ -66,9 +68,17 @@ public class Game extends Stage {
 
         var localRoundTickTime = roundTickTime;
         var localUnitTickTime = unitTickTime;
-        if (Gdx.input.isKeyPressed(Input.Keys.F12))  {
+        if (Gdx.input.isKeyPressed(Input.Keys.F)) {
             localRoundTickTime /= 4f;
             localUnitTickTime /= 4f;
+        }
+
+
+        if (!roundUnits.isEmpty()) {
+            var unit = roundUnits.get(0);
+            if (roundUnits.stream().allMatch(u -> u.isPlayerUnit() == unit.isPlayerUnit())) {
+                localRoundTickTime = 0.05f;
+            }
         }
 
         if ((timeSinceLastTick += delta) > localRoundTickTime) {
@@ -84,20 +94,25 @@ public class Game extends Stage {
                 if (unit.isDead()) {
                     logger.info("Unit " + unit + " died");
                     removeUnit(unit);
+                    if (!unit.isPlayerUnit())
+                        coins++;
                     continue;
                 }
 
                 if (unit.isPlayerUnit() && unit.getPathPoints().get(unit.getCurrentPoint()).equals(map.getStartPoint())) {
                     logger.info("Player unit " + unit + " reached enemy base");
                     removeUnit(unit);
+                    coins++;
                     continue;
-                }
-                else if (!unit.isPlayerUnit() && unit.getPathPoints().get(unit.getCurrentPoint()).equals(map.getFinishPoint())) {
+                } else if (!unit.isPlayerUnit() && unit.getPathPoints().get(unit.getCurrentPoint()).equals(map.getFinishPoint())) {
                     logger.info("Enemy unit " + unit + " reached player base");
                     removeUnit(unit);
+                    health--;
                     continue;
                 }
 
+                if (roundUnits.stream().allMatch(u -> u.isPlayerUnit() == unit.isPlayerUnit()))
+                    localUnitTickTime = 0;
                 unit.tick(localUnitTickTime);
             }
         }
@@ -115,6 +130,7 @@ public class Game extends Stage {
         logger.info("Starting round");
 
         roundCounter++;
+        coins += 10;
 
         for (Class<? extends Unit> playerUnit : playerUnits) {
             enemyRoundUnitsToSpawn.add(playerUnit);
@@ -126,8 +142,7 @@ public class Game extends Stage {
     }
 
     private void spawnRoundUnit() {
-        if (!enemyRoundUnitsToSpawn.isEmpty())
-        {
+        if (!enemyRoundUnitsToSpawn.isEmpty()) {
             var unitClazz = enemyRoundUnitsToSpawn.remove(0);
             logger.info("Spawning " + unitClazz);
             try {
@@ -137,10 +152,9 @@ public class Game extends Stage {
             } catch (ReflectionException e) {
                 e.printStackTrace();
             }
-
         }
-        if (!playerRoundUnitsToSpawn.isEmpty())
-        {
+
+        if (!playerRoundUnitsToSpawn.isEmpty()) {
             var unitClazz = playerRoundUnitsToSpawn.remove(0);
             logger.info("Spawning " + unitClazz);
             try {
