@@ -12,9 +12,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.github.czyzby.kiwi.log.Logger;
 import com.github.czyzby.kiwi.log.LoggerService;
 import dev.lyze.retro.game.actors.Map;
-import dev.lyze.retro.game.actors.units.SnakeUnit;
 import dev.lyze.retro.game.actors.units.Unit;
-import dev.lyze.retro.ui.NotifyVariable;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -51,7 +49,7 @@ public class Game extends Stage {
     private int health = 100;
 
     @Getter
-    private int coins = 20;
+    private int coins = 10;
 
     public Game() {
         super(new FitViewport(160, 144));
@@ -95,12 +93,15 @@ public class Game extends Stage {
                 if (unit.isDead()) {
                     logger.info("Unit " + unit + " died");
                     removeUnit(unit);
+                    if (!unit.isPlayerUnit())
+                        coins++;
                     continue;
                 }
 
                 if (unit.isPlayerUnit() && unit.getPathPoints().get(unit.getCurrentPoint()).equals(map.getStartPoint())) {
                     logger.info("Player unit " + unit + " reached enemy base");
                     removeUnit(unit);
+                    coins++;
                     continue;
                 } else if (!unit.isPlayerUnit() && unit.getPathPoints().get(unit.getCurrentPoint()).equals(map.getFinishPoint())) {
                     logger.info("Enemy unit " + unit + " reached player base");
@@ -128,6 +129,7 @@ public class Game extends Stage {
         logger.info("Starting round");
 
         roundCounter++;
+        coins += 10;
 
         for (Class<? extends Unit> playerUnit : playerUnits) {
             enemyRoundUnitsToSpawn.add(playerUnit);
