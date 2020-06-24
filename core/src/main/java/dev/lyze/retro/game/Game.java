@@ -12,7 +12,9 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.github.czyzby.kiwi.log.Logger;
 import com.github.czyzby.kiwi.log.LoggerService;
 import dev.lyze.retro.game.actors.Map;
+import dev.lyze.retro.game.actors.units.SnakeUnit;
 import dev.lyze.retro.game.actors.units.Unit;
+import dev.lyze.retro.ui.NotifyVariable;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -44,6 +46,12 @@ public class Game extends Stage {
     private Random random = new Random(1);
 
     private int roundCounter;
+
+    @Getter
+    private int health = 100;
+
+    @Getter
+    private int coins = 20;
 
     public Game() {
         super(new FitViewport(160, 144));
@@ -97,6 +105,7 @@ public class Game extends Stage {
                 } else if (!unit.isPlayerUnit() && unit.getPathPoints().get(unit.getCurrentPoint()).equals(map.getFinishPoint())) {
                     logger.info("Enemy unit " + unit + " reached player base");
                     removeUnit(unit);
+                    health--;
                     continue;
                 }
 
@@ -140,8 +149,8 @@ public class Game extends Stage {
             } catch (ReflectionException e) {
                 e.printStackTrace();
             }
-
         }
+
         if (!playerRoundUnitsToSpawn.isEmpty()) {
             var unitClazz = playerRoundUnitsToSpawn.remove(0);
             logger.info("Spawning " + unitClazz);
