@@ -1,12 +1,14 @@
 package dev.lyze.retro.game.actors.units;
 
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import dev.lyze.retro.game.Game;
+import dev.lyze.retro.game.actors.units.behaviours.MovementBehaviour;
+import dev.lyze.retro.game.actors.units.behaviours.RangedAttackBehaviour;
 
 public class MageUnit extends Unit {
-    public static final String RESOURCE_PATH = "enemies/mage.png";
-
     public MageUnit(Game game, boolean playerUnit) {
-        super(game, game.getAssMan().get(RESOURCE_PATH), playerUnit, 5);
+        super(game, game.getAss().getMageUnit(), playerUnit, 1);
+
+        addBehaviour(new RangedAttackBehaviour(this, 2, 5));
+        addBehaviour(new MovementBehaviour(this, 1));
     }
 }

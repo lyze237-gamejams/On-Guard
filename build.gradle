@@ -8,6 +8,7 @@ buildscript {
 	}
 	dependencies {
 		classpath "org.wisepersist:gwt-gradle-plugin:$gwtPluginVersion"
+		classpath "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
 	}
 }
 
@@ -32,6 +33,14 @@ configure(subprojects) {
 	}
 }
 
+import com.badlogic.gdx.tools.texturepacker.TexturePacker
+task texturePacker {
+	doLast {
+		logger.info "Calling TexturePacker: " + texturePacker
+		TexturePacker.process("assets/input", "assets/atlas", "atlas")
+	}
+}
+
 subprojects {
 	version = '0.0.' + getGitHash()
 	ext.appName = 'RetroTowerdefence'
@@ -42,5 +51,8 @@ subprojects {
 		maven { url 'https://jitpack.io' }
 		jcenter()
 	}
+
+	compileJava.dependsOn texturePacker
 }
+
 

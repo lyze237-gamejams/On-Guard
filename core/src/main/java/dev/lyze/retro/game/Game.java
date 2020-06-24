@@ -2,64 +2,65 @@ package dev.lyze.retro.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g3d.particles.influencers.RegionInfluencer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.reflect.ClassReflection;
+import com.badlogic.gdx.utils.reflect.ReflectionException;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.github.czyzby.kiwi.log.Logger;
 import com.github.czyzby.kiwi.log.LoggerService;
+import com.github.czyzby.kiwi.util.tuple.DoubleTuple;
+import com.github.czyzby.kiwi.util.tuple.immutable.Pair;
 import dev.lyze.retro.game.actors.Map;
-import dev.lyze.retro.game.actors.units.*;
+import dev.lyze.retro.game.actors.units.SamuraiUnit;
+import dev.lyze.retro.game.actors.units.MageUnit;
+import dev.lyze.retro.game.actors.units.SnakeUnit;
+import dev.lyze.retro.game.actors.units.Unit;
 import lombok.Getter;
+import lombok.SneakyThrows;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class Game extends Stage {
     private static final Logger logger = LoggerService.forClass(Game.class);
-    @Getter
-    private final AssetManager assMan = new AssetManager();
 
     @Getter
-    private Map map = new Map();
+    private Map map;
 
     @Getter
-    private ArrayList<Unit> units = new ArrayList<>();
+    private ArrayList<Unit> roundUnits = new ArrayList<>();
+
+    private ArrayList<Class<? extends Unit>> playerRoundUnitsToSpawn = new ArrayList<>();
+    private ArrayList<Class<? extends Unit>> enemyRoundUnitsToSpawn = new ArrayList<>();
+
+    @Getter
+    private ArrayList<Class<? extends Unit>> playerUnits = new ArrayList<>();
+
+    @Getter
+    private Assets ass = new Assets();
 
     private float timeSinceLastTick;
     private float roundTickTime = 1f;
     private float unitTickTime = 0.7f;
 
+    private Random random = new Random(1);
+
     public Game() {
         super(new FitViewport(160, 144));
 
-        loadAssets();
-
-        addActor(map);
-
-        addUnit(new SnakeUnit(this, false));
-        addUnit(new SnakeUnit(this, true));
-
-        addUnit(new HumanUnit(this, false));
-        addUnit(new HumanUnit(this, true));
-    }
-
-    private void addUnit(Unit unit) {
-        units.add(unit);
-        addActor(unit);
-    }
-
-    private void loadAssets() {
-        assMan.load(SkullUnit.RESOURCE_PATH, Texture.class);
-        assMan.load(HumanUnit.RESOURCE_PATH, Texture.class);
-        assMan.load(MageUnit.RESOURCE_PATH, Texture.class);
-        assMan.load(SnakeUnit.RESOURCE_PATH, Texture.class);
-
-        assMan.finishLoading();
+        addActor(map = new Map(this));
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
+
+        if (roundUnits.isEmpty() && enemyRoundUnitsToSpawn.isEmpty() && playerRoundUnitsToSpawn.isEmpty()) {
+            startRound();
+        }
 
         var localRoundTickTime = roundTickTime;
         var localUnitTickTime = unitTickTime;
@@ -69,18 +70,91 @@ public class Game extends Stage {
         }
 
         if ((timeSinceLastTick += delta) > localRoundTickTime) {
+            spawnRoundUnit();
+
             timeSinceLastTick = 0;
 
-            for (int i = units.size() - 1; i >= 0; i--) {
-                Unit unit = units.get(i);
+            for (int i = roundUnits.size() - 1; i >= 0; i--) {
+                Unit unit = roundUnits.get(i);
                 if (unit.isDead()) {
-                    units.remove(i);
-                    getActors().removeValue(unit, true);
+                    logger.info("Unit " + unit + " died");
+                    removeUnit(unit);
+                    continue;
+                }
+
+                if (unit.isPlayerUnit() && unit.getPathPoints().get(unit.getCurrentPoint()).equals(map.getStartPoint())) {
+                    logger.info("Player unit " + unit + " reached enemy base");
+                    removeUnit(unit);
+                    continue;
+                }
+                else if (!unit.isPlayerUnit() && unit.getPathPoints().get(unit.getCurrentPoint()).equals(map.getFinishPoint())) {
+                    logger.info("Enemy unit " + unit + " reached player base");
+                    removeUnit(unit);
                     continue;
                 }
 
                 unit.tick(localUnitTickTime);
             }
         }
+    }
+
+    private void removeUnit(Unit unit) {
+        roundUnits.remove(unit);
+        getActors().removeValue(unit, true);
+    }
+
+    private void startRound() {
+        logger.info("Starting round");
+
+        for (Class<? extends Unit> playerUnit : playerUnits) {
+            enemyRoundUnitsToSpawn.add(playerUnit);
+            playerRoundUnitsToSpawn.add(playerUnit);
+        }
+
+        Collections.shuffle(enemyRoundUnitsToSpawn);
+        Collections.shuffle(playerRoundUnitsToSpawn);
+    }
+
+    private void spawnRoundUnit() {
+        if (!enemyRoundUnitsToSpawn.isEmpty())
+        {
+            var unitClazz = enemyRoundUnitsToSpawn.remove(0);
+            logger.info("Spawning " + unitClazz);
+            try {
+                Unit unit = (Unit) ClassReflection.getConstructor(unitClazz, Game.class, boolean.class).newInstance(this, false);
+                roundUnits.add(unit);
+                addActor(unit);
+            } catch (ReflectionException e) {
+                e.printStackTrace();
+            }
+
+        }
+        if (!playerRoundUnitsToSpawn.isEmpty())
+        {
+            var unitClazz = playerRoundUnitsToSpawn.remove(0);
+            logger.info("Spawning " + unitClazz);
+            try {
+                Unit unit = (Unit) ClassReflection.getConstructor(unitClazz, Game.class, boolean.class).newInstance(this, true);
+                roundUnits.add(unit);
+                addActor(unit);
+            } catch (ReflectionException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void spawnParticle(TextureAtlas.AtlasRegion texture, float x, float y, float duration) {
+        var particle = new Image(texture);
+        particle.setPosition(x, y);
+        addActor(particle);
+
+        var action = new AlphaAction();
+        action.setDuration(duration);
+        action.setAlpha(0);
+        particle.addAction(action);
+    }
+
+    public void registerPlayerUnit(Class<? extends Unit> unitClazz) {
+        playerUnits.add(unitClazz);
     }
 }

@@ -11,6 +11,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.github.czyzby.kiwi.log.Logger;
 import com.github.czyzby.kiwi.log.LoggerService;
+import dev.lyze.retro.game.Game;
 import dev.lyze.retro.game.actors.enums.Direction;
 import dev.lyze.retro.game.actors.enums.Type;
 import dev.lyze.retro.utils.IntVector2;
@@ -21,6 +22,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Map extends Actor {
+    public static final String RESOURCE_PATH = "maps/Test.tmx";
+
     private static final Logger logger = LoggerService.forClass(Map.class);
 
     private final TiledMap map;
@@ -37,8 +40,8 @@ public class Map extends Actor {
     @Getter
     private int tileWidth, tileHeight;
 
-    public Map() {
-        map = new TmxMapLoader().load("maps/data/Test.tmx");
+    public Map(Game game) {
+        map = game.getAss().get(RESOURCE_PATH);
         renderer = new OrthogonalTiledMapRendererBleeding(map, 1);
 
         parseMap();
