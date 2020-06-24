@@ -1,10 +1,9 @@
 package dev.lyze.retro.game.actors.units;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Array;
 import dev.lyze.retro.game.Game;
 import dev.lyze.retro.game.actors.units.behaviours.Behaviour;
 import dev.lyze.retro.utils.IntVector2;
@@ -31,11 +30,18 @@ public abstract class Unit extends Image {
     @Getter
     private int health;
 
-    public Unit(Game game, TextureAtlas.AtlasRegion texture, boolean playerUnit, int health) {
-        super(texture);
+    private Array<TextureRegionDrawable> movementTextures;
+    private float timeSinceLastTextureSwap;
+    private int currentTextureIndex;
+
+
+    public Unit(Game game, Array<TextureAtlas.AtlasRegion> atlasRegion, boolean playerUnit, int health) {
+        super(atlasRegion.first());
         this.game = game;
         this.playerUnit = playerUnit;
         this.health = health;
+        movementTextures = new Array<>();
+        atlasRegion.forEach(t -> movementTextures.add(new TextureRegionDrawable(t)));
 
         pathPoints = game.getMap().getPathPoints();
         if (playerUnit) {
@@ -54,14 +60,20 @@ public abstract class Unit extends Image {
     public void act(float delta) {
         super.act(delta);
 
+        if ((timeSinceLastTextureSwap += delta) > 0.2f) {
+            timeSinceLastTextureSwap = 0;
+            if (++currentTextureIndex >= movementTextures.size) {
+                currentTextureIndex = 0;
+            }
+
+            setDrawable(movementTextures.get(currentTextureIndex));
+        }
+
         setPosition(getX(), getY());
     }
 
     public void tick(float duration) {
-        for (Behaviour behaviour : behaviours) {
-            if (behaviour.tick(duration))
-                break;
-        }
+        behaviours.forEach(b -> b.tick(duration));
     }
 
     public void damage(int amount) {

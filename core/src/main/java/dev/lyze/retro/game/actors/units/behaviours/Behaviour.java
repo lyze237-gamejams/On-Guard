@@ -11,10 +11,7 @@ public abstract class Behaviour {
         this.unit = unit;
     }
 
-    /**
-     * @return true to not execute all other upcoming behaviours
-     */
-    public abstract boolean tick(float duration);
+    public abstract void tick(float duration);
 
     protected void bobUnit(float duration) {
         var sequence = new SequenceAction();

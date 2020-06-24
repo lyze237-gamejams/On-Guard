@@ -17,7 +17,7 @@ public class RangedAttackBehaviour extends Behaviour {
     }
 
     @Override
-    public boolean tick(float duration) {
+    public void tick(float duration) {
         boolean hit = false;
 
         for (Unit loopUnit : unit.getGame().getRoundUnits()) {
@@ -41,7 +41,5 @@ public class RangedAttackBehaviour extends Behaviour {
                 unit.getGame().spawnParticle(unit.getGame().getAss().getRangedAttackParticle(), nextPathPoint.getX(),nextPathPoint.getY(), duration * 0.2f);
             }
         }
-
-        return hit;
     }
 }
