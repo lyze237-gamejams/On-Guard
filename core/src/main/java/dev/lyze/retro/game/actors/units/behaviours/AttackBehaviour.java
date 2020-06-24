@@ -16,9 +16,9 @@ public class AttackBehaviour extends Behaviour {
     }
 
     @Override
-    public boolean tick(float duration) {
+    public void tick(float duration) {
         if (unit.getCurrentPoint() + 1 >= unit.getPathPoints().size())
-            return false;
+            return;
 
         var nextPathPoint = unit.getPathPoints().get(unit.getCurrentPoint() + 1);
         for (Unit loopUnit : unit.getGame().getRoundUnits()) {
@@ -29,11 +29,9 @@ public class AttackBehaviour extends Behaviour {
 
                     bobUnit(duration);
 
-                    return true;
+                    return;
                 }
             }
         }
-
-        return false;
     }
 }

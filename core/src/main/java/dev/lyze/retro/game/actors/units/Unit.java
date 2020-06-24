@@ -73,10 +73,7 @@ public abstract class Unit extends Image {
     }
 
     public void tick(float duration) {
-        for (Behaviour behaviour : behaviours) {
-            if (behaviour.tick(duration))
-                break;
-        }
+        behaviours.forEach(b -> b.tick(duration));
     }
 
     public void damage(int amount) {
