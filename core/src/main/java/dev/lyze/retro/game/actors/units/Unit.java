@@ -83,7 +83,7 @@ public abstract class Unit extends Image {
     }
 
     public boolean isDead() {
-        return health <= 0;
+        return health + game.getUnitUpgrades().get(getClass()) <= 0;
     }
 
     @Override

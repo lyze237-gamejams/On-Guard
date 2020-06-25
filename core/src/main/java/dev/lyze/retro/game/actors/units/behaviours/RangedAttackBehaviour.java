@@ -26,7 +26,7 @@ public class RangedAttackBehaviour extends Behaviour {
                     var nextPathPoint = unit.getPathPoints().get(unit.getCurrentPoint() + i);
                     if (unit.getGame().getMap().mapCoordsEqualsPixelCoords(nextPathPoint.getX(), nextPathPoint.getY(), (int) loopUnit.getX(), (int) loopUnit.getY())) {
                         logger.info(unit.toString() + " hit " + loopUnit.toString());
-                        loopUnit.damage(damage);
+                        loopUnit.damage(damage + unit.getGame().getUnitUpgrades().get(unit.getClass()));
                         hit = true;
                     }
                 }

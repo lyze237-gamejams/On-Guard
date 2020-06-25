@@ -2,11 +2,13 @@ package dev.lyze.retro.game.actors.units.behaviours;
 
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import dev.lyze.retro.game.actors.units.Unit;
+import lombok.Setter;
 
 public class MovementBehaviour extends Behaviour {
     private final MoveToAction moveAction = new MoveToAction();
 
     private int currentSleepTicks;
+    @Setter
     private int sleepTicks;
 
     public MovementBehaviour(Unit unit, int sleepTicks) {

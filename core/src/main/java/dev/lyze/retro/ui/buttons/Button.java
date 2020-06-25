@@ -7,26 +7,33 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
 import com.github.czyzby.kiwi.log.Logger;
 import com.github.czyzby.kiwi.log.LoggerService;
 import dev.lyze.retro.game.Game;
+import lombok.Getter;
+import lombok.Setter;
 
 public abstract class Button extends Actor {
     private static final Logger logger = LoggerService.forClass(Button.class);
 
-    private final TextureAtlas.AtlasRegion up, down;
+    private final Array<TextureAtlas.AtlasRegion> up;
+    private final Array<TextureAtlas.AtlasRegion> down;
     private final boolean toggle;
     protected final Game game;
 
     private boolean isTouched;
 
+    @Getter @Setter
+    private int buttonFrame;
+
     public Button(Game game, String up, String down, boolean toggle) {
         this.game = game;
-        this.up = game.getAss().getRegion(up);
-        this.down = game.getAss().getRegion(down);
+        this.up = game.getAss().getRegions(up);
+        this.down = game.getAss().getRegions(down);
         this.toggle = toggle;
 
-        setBounds(0, 0, this.up.getRegionWidth(), this.up.getRegionHeight());
+        setBounds(0, 0, this.up.get(0).getRegionWidth(), this.up.get(0).getRegionHeight());
 
         addListeners();
     }
@@ -60,8 +67,12 @@ public abstract class Button extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        batch.draw(isTouched ? down : up, getX(), getY(), getWidth(), getHeight());
+        batch.draw(isTouched ? down.get(buttonFrame) : up.get(buttonFrame), getX(), getY(), getWidth(), getHeight());
     }
 
     protected abstract void setState(boolean state);
+
+    public int getButtonFramesCount() {
+        return up.size;
+    }
 }

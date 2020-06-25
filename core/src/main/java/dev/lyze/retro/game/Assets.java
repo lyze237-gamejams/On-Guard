@@ -82,9 +82,16 @@ public class Assets {
     }
 
     public TextureAtlas.AtlasRegion getRegion(String path) {
-        TextureAtlas.AtlasRegion region = atlas.findRegion(path);
+        var region = atlas.findRegion(path);
         if (region == null)
             throw new IllegalArgumentException("Unknown path " + path);
         return region;
+    }
+
+    public Array<TextureAtlas.AtlasRegion> getRegions(String path) {
+        var regions = atlas.findRegions(path);
+        if (regions == null)
+            throw new IllegalArgumentException("Unknown path " + path);
+        return regions;
     }
 }
