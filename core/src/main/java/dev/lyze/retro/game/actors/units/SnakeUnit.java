@@ -1,7 +1,5 @@
 package dev.lyze.retro.game.actors.units;
 
-import com.github.czyzby.kiwi.log.Logger;
-import com.github.czyzby.kiwi.log.LoggerService;
 import dev.lyze.retro.game.Game;
 import dev.lyze.retro.game.Player;
 import dev.lyze.retro.game.actors.units.behaviours.AttackBehaviour;

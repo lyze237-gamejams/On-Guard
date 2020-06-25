@@ -1,6 +1,5 @@
 package dev.lyze.retro.ui.buttons;
 
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import dev.lyze.retro.Stats;
 import dev.lyze.retro.game.Game;
 
