@@ -51,11 +51,13 @@ public class Player {
     }
 
     public void addCoins(int amount) {
-        coins += amount;
+        if ((coins += amount) > 999)
+            coins = 999;
     }
 
     public void addHealth(int amount) {
-        health += amount;
+        if ((health += amount) > 999)
+            health = 999;
     }
 
     public void spawnRoundUnit() {
