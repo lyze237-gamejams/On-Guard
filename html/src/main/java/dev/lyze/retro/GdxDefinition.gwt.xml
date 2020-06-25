@@ -9,6 +9,7 @@
 	<entry-point class="dev.lyze.retro.gwt.GwtLauncher" />
 	<extend-configuration-property name="gdx.reflect.include" value="dev.lyze.retro.game.actors.units" />
 	<extend-configuration-property name="gdx.reflect.include" value="dev.lyze.retro.game.Game" />
+	<extend-configuration-property name="gdx.reflect.include" value="dev.lyze.retro.game.Player" />
 	<set-configuration-property name="gdx.assetpath" value="../assets" />
 	<set-configuration-property name="xsiframe.failIfScriptTag" value="FALSE"/>
 	<!-- These two lines reduce the work GWT has to do during compilation and also shrink output size. -->
