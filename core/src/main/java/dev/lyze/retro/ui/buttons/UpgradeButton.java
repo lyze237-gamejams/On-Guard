@@ -5,11 +5,12 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.github.czyzby.kiwi.log.Logger;
 import com.github.czyzby.kiwi.log.LoggerService;
+import dev.lyze.retro.Stats;
 import dev.lyze.retro.game.Game;
 import dev.lyze.retro.game.actors.units.Unit;
 
 public class UpgradeButton extends Button {
-    private Logger logger = LoggerService.forClass(UpgradeButton.class);
+    private static final Logger logger = LoggerService.forClass(UpgradeButton.class);
 
     private final Class<? extends Unit> unit;
     private int price;
@@ -19,15 +20,16 @@ public class UpgradeButton extends Button {
 
     private boolean buttonState;
 
-    public UpgradeButton(Class<? extends Unit> unit, int price, Game game, String up, String down) {
+    public UpgradeButton(Class<? extends Unit> unit, Game game, String up, String down) {
         super(game, up, down);
 
         this.unit = unit;
-        this.price = price;
+        this.price = Stats.UPGRADE_PRICE;
 
         numbersFont = game.getAss().getNumbersFont();
 
         game.getPlayer().getUpgrades().put(unit, 0);
+        game.getEnemy().getUpgrades().put(unit, 0);
     }
 
     @Override

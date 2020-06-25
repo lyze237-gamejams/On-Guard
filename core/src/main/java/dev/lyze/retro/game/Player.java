@@ -4,6 +4,8 @@ import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
 import com.github.czyzby.kiwi.log.Logger;
 import com.github.czyzby.kiwi.log.LoggerService;
+import dev.lyze.retro.Stats;
+import dev.lyze.retro.game.actors.units.SnakeUnit;
 import dev.lyze.retro.game.actors.units.Unit;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,20 +19,20 @@ public class Player {
 
     private final Game game;
     @Getter @Setter
-    private int coins = 20;
+    private int coins = Stats.START_COINS;
     @Getter @Setter
-    private int health = 100;
+    private int health = Stats.START_HEALTH;
 
     @Getter
-    private boolean human; // or npc?
+    private final boolean human; // or npc?
 
     @Getter
-    private ArrayList<Class<? extends Unit>> boughtUnits = new ArrayList<>();
+    private final ArrayList<Class<? extends Unit>> boughtUnits = new ArrayList<>();
     @Getter
-    private HashMap<Class<? extends Unit>, Integer> upgrades = new HashMap<>();
+    private final HashMap<Class<? extends Unit>, Integer> upgrades = new HashMap<>();
 
     @Getter
-    private ArrayList<Unit> roundUnits = new ArrayList<>();
+    private final ArrayList<Unit> roundUnits = new ArrayList<>();
 
     @Getter
     private ArrayList<Class<? extends Unit>> roundUnitsToSpawn = new ArrayList<>();
@@ -46,6 +48,14 @@ public class Player {
 
         coins -= amount;
         return true;
+    }
+
+    public void addCoins(int amount) {
+        coins += amount;
+    }
+
+    public void addHealth(int amount) {
+        health += amount;
     }
 
     public void spawnRoundUnit() {
@@ -73,9 +83,21 @@ public class Player {
     public void act(float delta) {
         if (isHuman()) // npc act
             return;
+
+        if (game.getRoundCounter() < 2) {
+            spawnUnit(SnakeUnit.class);
+        }
     }
 
     public boolean hasRoundUnits() {
         return roundUnits.isEmpty();
+    }
+
+    public boolean spawnUnit(Class<? extends Unit> unitClazz) {
+        if (subtractCoins(Stats.ALL_STATS.get(unitClazz).getPrice())) {
+            boughtUnits.add(unitClazz);
+            return true;
+        }
+        return false;
     }
 }

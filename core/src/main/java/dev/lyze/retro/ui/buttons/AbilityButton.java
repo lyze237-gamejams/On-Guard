@@ -1,15 +1,16 @@
 package dev.lyze.retro.ui.buttons;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import dev.lyze.retro.Stats;
 import dev.lyze.retro.game.Game;
 
 public class AbilityButton extends Button {
     private final int price;
 
-    public AbilityButton(int price, Game game, String up, String down) {
+    public AbilityButton(Game game, String up, String down) {
         super(game, up, down);
 
-        this.price = price;
+        this.price = Stats.ABILITY_PRICE;
     }
 
     @Override

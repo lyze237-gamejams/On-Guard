@@ -17,6 +17,7 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.ListIterator;
 import java.util.Random;
 
 public class Game extends Stage {
@@ -57,7 +58,7 @@ public class Game extends Stage {
         enemy.act(delta);
 
         if (player.getRoundUnitsToSpawn().isEmpty() && enemy.getRoundUnitsToSpawn().isEmpty()
-                && player.getRoundUnits().isEmpty() && enemy.getRoundUnitsToSpawn().isEmpty()) { // field is completely empty
+                && player.getRoundUnits().isEmpty() && enemy.getRoundUnits().isEmpty()) { // field is completely empty
             startRound();
         }
 
@@ -81,44 +82,47 @@ public class Game extends Stage {
 
             var playerUnitsIterator = player.getRoundUnits().listIterator();
             var enemyUnitsIterator = enemy.getRoundUnits().listIterator();
-            do {
-                var playerSide = random.nextBoolean();
-                if (roundCounter >= 2) // first round don't shuffle so player wins
-                    playerSide = true;
-                var pickedSide = playerSide ? playerUnitsIterator : enemyUnitsIterator;
 
-                if (!pickedSide.hasNext())
-                    continue;
+            while (playerUnitsIterator.hasNext() || enemyUnitsIterator.hasNext()) {
+                ListIterator<Unit> pickedIterator;
+                if (playerUnitsIterator.hasNext() && enemyUnitsIterator.hasNext()) {
+                    var playerSide = random.nextBoolean();
+                    if (roundCounter >= 2) // first round don't shuffle so player wins
+                        playerSide = true;
+                    pickedIterator = playerSide ? playerUnitsIterator : enemyUnitsIterator;
+                }
+                else if (playerUnitsIterator.hasNext()) {
+                    pickedIterator = playerUnitsIterator;
+                }
+                else {
+                    pickedIterator = enemyUnitsIterator;
+                }
 
-                var unit = pickedSide.next();
+                var unit = pickedIterator.next();
                 if (unit.isDead()) {
                     logger.info("Unit " + unit + " died");
-                    pickedSide.remove();
+                    pickedIterator.remove();
                     getActors().removeValue(unit, true);
-                    if (unit.getPlayer().isHuman()) {
-                        enemy.setCoins(enemy.getCoins() + 1);
-                    } else {
-                        player.setCoins(player.getCoins() + 1);
-                    }
+                    getOtherPlayer(unit.getPlayer()).addCoins(1);
                     continue;
                 }
                 if (unit.getPlayer().isHuman() && unit.getPathPoints().get(unit.getCurrentPoint()).equals(map.getStartPoint())) {
                     logger.info("Player unit " + unit + " reached enemy base");
-                    pickedSide.remove();
+                    pickedIterator.remove();
                     getActors().removeValue(unit, true);
-                    player.setCoins(player.getCoins() + 1);
+                    player.addCoins(1);
                     continue;
                 } else if (!unit.getPlayer().isHuman() && unit.getPathPoints().get(unit.getCurrentPoint()).equals(map.getFinishPoint())) {
                     logger.info("Enemy unit " + unit + " reached player base");
-                    pickedSide.remove();
+                    pickedIterator.remove();
                     getActors().removeValue(unit, true);
-                    player.setHealth(player.getHealth() + 1);
-                    enemy.setCoins(enemy.getCoins() + 1);
+                    player.addHealth(- 1);
+                    enemy.addCoins(1);
                     continue;
                 }
 
                 unit.tick(localUnitTickTime);
-            } while (playerUnitsIterator.hasNext() || enemyUnitsIterator.hasNext());
+            }
         }
     }
 
@@ -131,8 +135,8 @@ public class Game extends Stage {
         player.startRound();
         enemy.startRound();
 
-        enemy.setCoins(enemy.getCoins() + 10);
-        player.setCoins(player.getCoins() + 10);
+        enemy.addCoins(10);
+        player.addCoins(10);
 
         roundCounter++;
     }
@@ -151,6 +155,6 @@ public class Game extends Stage {
     public Player getOtherPlayer(Player player) {
         if (this.player == player)
             return enemy;
-        return player;
+        return this.player;
     }
 }
