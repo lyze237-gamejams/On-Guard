@@ -34,6 +34,6 @@ public class HealthButton extends Button {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
 
-        numbersFont.draw(batch, String.valueOf(game.getHealth()), numberFontCoords.x, numberFontCoords.y);
+        numbersFont.draw(batch, String.valueOf(game.getPlayer().getHealth()), numberFontCoords.x, numberFontCoords.y);
     }
 }

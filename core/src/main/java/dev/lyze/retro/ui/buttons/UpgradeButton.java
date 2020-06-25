@@ -8,8 +8,6 @@ import com.github.czyzby.kiwi.log.LoggerService;
 import dev.lyze.retro.game.Game;
 import dev.lyze.retro.game.actors.units.Unit;
 
-import javax.swing.*;
-
 public class UpgradeButton extends Button {
     private Logger logger = LoggerService.forClass(UpgradeButton.class);
 
@@ -29,7 +27,7 @@ public class UpgradeButton extends Button {
 
         numbersFont = game.getAss().getNumbersFont();
 
-        game.getUnitUpgrades().put(unit, 0);
+        game.getPlayer().getUpgrades().put(unit, 0);
     }
 
     @Override
@@ -38,22 +36,19 @@ public class UpgradeButton extends Button {
             if (getButtonFrame() + 1 >= getButtonFramesCount())
                 return;
 
-            if (game.getCoins() < price)
-                return;
-
-
-            if (!game.getPlayerUnits().contains(unit))
+            if (!game.getPlayer().getBoughtUnits().contains(unit))
                 return; // didn't buy yet so don't allow user to upgrade unit
 
-            game.setCoins(game.getCoins() - price);
+            if (game.getPlayer().subtractCoins(price))
+            {
+                game.getPlayer().getUpgrades().replace(unit, game.getPlayer().getUpgrades().get(unit) + 1);
+                setButtonFrame(getButtonFrame() + 1);
 
-            game.getUnitUpgrades().replace(unit, game.getUnitUpgrades().get(unit) + 1);
-            setButtonFrame(getButtonFrame() + 1);
+                logger.info("Buying upgrade: " + this + " Total: " + game.getPlayer().getUpgrades().get(unit));
 
-            logger.info("Buying upgrade: " + this + " Total: " + game.getUnitUpgrades().get(unit));
-
-            if ((price *= 2) > 9)
-                price = 9;
+                if ((price *= 2) > 9)
+                    price = 9;
+            }
         }
     }
 

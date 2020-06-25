@@ -34,6 +34,6 @@ public class CoinButton extends Button {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
 
-        numbersFont.draw(batch, String.valueOf(game.getCoins()), numberFontCoords.x, numberFontCoords.y);
+        numbersFont.draw(batch, String.valueOf(game.getPlayer().getCoins()), numberFontCoords.x, numberFontCoords.y);
     }
 }

@@ -18,11 +18,8 @@ public class UnitButton extends Button {
     @Override
     protected void setState(boolean state) {
         if (state) {
-            if (game.getCoins() < price)
-                return;
-
-            game.setCoins(game.getCoins() - price);
-            game.registerPlayerUnit(unitClazz);
+            if (game.getPlayer().subtractCoins(price))
+                game.getPlayer().getBoughtUnits().add(unitClazz);
         }
     }
 }
