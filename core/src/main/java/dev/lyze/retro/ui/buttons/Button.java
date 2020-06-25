@@ -12,6 +12,7 @@ import com.github.czyzby.kiwi.log.Logger;
 import com.github.czyzby.kiwi.log.LoggerService;
 import dev.lyze.retro.game.Game;
 import lombok.Getter;
+import lombok.Setter;
 
 public abstract class Button extends Actor {
     private static final Logger logger = LoggerService.forClass(Button.class);
@@ -23,7 +24,7 @@ public abstract class Button extends Actor {
 
     private boolean isTouched;
 
-    @Getter
+    @Getter @Setter
     private int buttonFrame;
 
     public Button(Game game, String up, String down, boolean toggle) {

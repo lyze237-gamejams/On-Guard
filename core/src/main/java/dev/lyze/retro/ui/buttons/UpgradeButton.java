@@ -8,7 +8,7 @@ import dev.lyze.retro.game.actors.units.Unit;
 
 public class UpgradeButton extends Button {
     private final Class<? extends Unit> unit;
-    private final int price;
+    private int price;
 
     private final BitmapFont numbersFont;
     private Vector2 numberFontCoords;
@@ -22,11 +22,31 @@ public class UpgradeButton extends Button {
         this.price = price;
 
         numbersFont = game.getAss().getNumbersFont();
+
+        game.getUnitUpgrades().put(unit, 0);
     }
 
     @Override
     protected void setState(boolean state) {
-        buttonState = state;
+        if (buttonState = state) {
+            if (getButtonFrame() + 1 >= getButtonFramesCount())
+                return;
+
+            if (game.getCoins() < price)
+                return;
+
+
+            if (!game.getPlayerUnits().contains(unit))
+                return; // didn't buy yet so don't allow user to upgrade unit
+
+            game.setCoins(game.getCoins() - price);
+
+            game.getUnitUpgrades().replace(unit, game.getUnitUpgrades().get(unit) + 1);
+            setButtonFrame(getButtonFrame() + 1);
+
+            if ((price *= 2) > 9)
+                price = 9;
+        }
     }
 
     @Override

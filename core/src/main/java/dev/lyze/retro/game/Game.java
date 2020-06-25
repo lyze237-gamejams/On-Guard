@@ -18,6 +18,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Random;
 
 public class Game extends Stage {
@@ -34,6 +35,9 @@ public class Game extends Stage {
 
     @Getter
     private ArrayList<Class<? extends Unit>> playerUnits = new ArrayList<>();
+
+    @Getter
+    private HashMap<Class<? extends Unit>, Integer> unitUpgrades = new HashMap<>();
 
     @Getter
     private Assets ass = new Assets();

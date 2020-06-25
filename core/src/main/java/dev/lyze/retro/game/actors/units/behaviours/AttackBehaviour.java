@@ -25,7 +25,7 @@ public class AttackBehaviour extends Behaviour {
             if (unit.isPlayerUnit() != loopUnit.isPlayerUnit()) {
                 if (unit.getGame().getMap().mapCoordsEqualsPixelCoords(nextPathPoint.getX(), nextPathPoint.getY(), (int) loopUnit.getX(), (int) loopUnit.getY())) {
                     logger.info(unit.toString() + " hit " + loopUnit.toString());
-                    loopUnit.damage(damage);
+                    loopUnit.damage(damage + unit.getGame().getUnitUpgrades().get(unit.getClass()));
 
                     bobUnit(duration);
 
