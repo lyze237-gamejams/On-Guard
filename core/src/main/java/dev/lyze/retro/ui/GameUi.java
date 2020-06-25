@@ -40,7 +40,7 @@ public class GameUi extends Stage {
         table.add(new UpgradeButton(MageUnit.class, 2, game, "Buttons/Upgrade/Snake_Upgrade_Up", "Buttons/Upgrade/Snake_Upgrade_Down")).padTop(1).row();
         table.add(new UnitButton(SamuraiUnit.class, 5, game, "Buttons/Samurai/Samurai_Button_Up", "Buttons/Samurai/Samurai_Button_Down")).padTop(1);
         table.add(new UpgradeButton(SamuraiUnit.class, 2, game, "Buttons/Upgrade/Snake_Upgrade_Up", "Buttons/Upgrade/Snake_Upgrade_Down")).padTop(1).row();
-        table.add(new AbilityButton(game, "Buttons/Ability/Ability_Button_Up", "Buttons/Ability/Ability_Button_Down")).padTop(1);
+        table.add(new AbilityButton(30, game, "Buttons/Ability/Ability_Button_Up", "Buttons/Ability/Ability_Button_Down")).padTop(1);
         table.add(new SoundButton(game, "Buttons/Sound/Sound_Button_On", "Buttons/Sound/Sound_Button_Off")).padTop(1).row();
 
         root.add(table).expand().right().top().padRight(2);
