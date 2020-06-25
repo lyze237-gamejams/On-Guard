@@ -6,19 +6,14 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.utils.reflect.ClassReflection;
-import com.badlogic.gdx.utils.reflect.ReflectionException;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.github.czyzby.kiwi.log.Logger;
 import com.github.czyzby.kiwi.log.LoggerService;
 import dev.lyze.retro.game.actors.Map;
 import dev.lyze.retro.game.actors.units.Unit;
 import lombok.Getter;
-import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.ListIterator;
 import java.util.Random;
 
 public class Game extends Stage {
@@ -28,45 +23,38 @@ public class Game extends Stage {
     private Map map;
 
     @Getter
-    private ArrayList<Unit> roundUnits = new ArrayList<>();
-
-    private ArrayList<Class<? extends Unit>> playerRoundUnitsToSpawn = new ArrayList<>();
-    private ArrayList<Class<? extends Unit>> enemyRoundUnitsToSpawn = new ArrayList<>();
-
-    @Getter
-    private ArrayList<Class<? extends Unit>> playerUnits = new ArrayList<>();
-
-    @Getter
-    private HashMap<Class<? extends Unit>, Integer> unitUpgrades = new HashMap<>();
-
-    @Getter
-    private Assets ass = new Assets();
+    private final Assets ass = new Assets();
 
     private float timeSinceLastTick;
-    private float roundTickTime = 0.3f;
-    private float unitTickTime = 0.1f;
+    private final float roundTickTime = 0.3f;
+    private final float unitTickTime = 0.1f;
 
-    private Random random = new Random(1);
+    private final Random random = new Random(1);
 
+    @Getter
     private int roundCounter;
 
     @Getter
-    private int health = 100;
-
-    @Getter @Setter
-    private int coins = 10;
+    private final Player player, enemy;
 
     public Game() {
         super(new FitViewport(160, 144));
 
         addActor(map = new Map(this));
+
+        player = new Player(this, true);
+        enemy = new Player(this, false);
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
 
-        if (roundUnits.isEmpty() && enemyRoundUnitsToSpawn.isEmpty() && playerRoundUnitsToSpawn.isEmpty()) {
+        player.act(delta);
+        enemy.act(delta);
+
+        if (player.getRoundUnitsToSpawn().isEmpty() && enemy.getRoundUnitsToSpawn().isEmpty()
+                && player.getRoundUnits().isEmpty() && enemy.getRoundUnits().isEmpty()) { // field is completely empty
             startRound();
         }
 
@@ -77,98 +65,76 @@ public class Game extends Stage {
             localUnitTickTime /= 4f;
         }
 
-
-        if (!roundUnits.isEmpty()) {
-            var unit = roundUnits.get(0);
-            if (roundUnits.stream().allMatch(u -> u.isPlayerUnit() == unit.isPlayerUnit())) {
-                localRoundTickTime = 0.05f;
-            }
+        if (player.hasRoundUnits() ^ enemy.hasRoundUnits()) { // only one of the sides has units => xor
+            localRoundTickTime = 0.05f;
+            localUnitTickTime = 0;
         }
 
         if ((timeSinceLastTick += delta) > localRoundTickTime) {
-            spawnRoundUnit();
+            player.spawnRoundUnit();
+            enemy.spawnRoundUnit();
 
             timeSinceLastTick = 0;
 
-            if (roundCounter >= 2) // first round don't shuffle so player wins
-                Collections.shuffle(roundUnits); // shuffle for random who attacks first
+            var playerUnitsIterator = player.getRoundUnits().listIterator();
+            var enemyUnitsIterator = enemy.getRoundUnits().listIterator();
 
-            for (int i = roundUnits.size() - 1; i >= 0; i--) {
-                Unit unit = roundUnits.get(i);
+            while (playerUnitsIterator.hasNext() || enemyUnitsIterator.hasNext()) {
+                ListIterator<Unit> pickedIterator;
+                if (playerUnitsIterator.hasNext() && enemyUnitsIterator.hasNext()) {
+                    var playerSide = random.nextBoolean();
+                    if (roundCounter >= 2) // first round don't shuffle so player wins
+                        playerSide = true;
+                    pickedIterator = playerSide ? playerUnitsIterator : enemyUnitsIterator;
+                }
+                else if (playerUnitsIterator.hasNext()) {
+                    pickedIterator = playerUnitsIterator;
+                }
+                else {
+                    pickedIterator = enemyUnitsIterator;
+                }
+
+                var unit = pickedIterator.next();
                 if (unit.isDead()) {
                     logger.info("Unit " + unit + " died");
-                    removeUnit(unit);
-                    if (!unit.isPlayerUnit())
-                        coins++;
+                    pickedIterator.remove();
+                    getActors().removeValue(unit, true);
+                    getOtherPlayer(unit.getPlayer()).addCoins(1);
                     continue;
                 }
-
-                if (unit.isPlayerUnit() && unit.getPathPoints().get(unit.getCurrentPoint()).equals(map.getStartPoint())) {
+                if (unit.getPlayer().isHuman() && unit.getPathPoints().get(unit.getCurrentPoint()).equals(map.getStartPoint())) {
                     logger.info("Player unit " + unit + " reached enemy base");
-                    removeUnit(unit);
-                    coins++;
+                    pickedIterator.remove();
+                    getActors().removeValue(unit, true);
+                    player.addCoins(1);
                     continue;
-                } else if (!unit.isPlayerUnit() && unit.getPathPoints().get(unit.getCurrentPoint()).equals(map.getFinishPoint())) {
+                } else if (!unit.getPlayer().isHuman() && unit.getPathPoints().get(unit.getCurrentPoint()).equals(map.getFinishPoint())) {
                     logger.info("Enemy unit " + unit + " reached player base");
-                    removeUnit(unit);
-                    health--;
+                    pickedIterator.remove();
+                    getActors().removeValue(unit, true);
+                    player.addHealth(- 1);
+                    enemy.addCoins(1);
                     continue;
                 }
 
-                if (roundUnits.stream().allMatch(u -> u.isPlayerUnit() == unit.isPlayerUnit()))
-                    localUnitTickTime = 0;
                 unit.tick(localUnitTickTime);
             }
         }
     }
 
-    private void removeUnit(Unit unit) {
-        roundUnits.remove(unit);
-        getActors().removeValue(unit, true);
-    }
-
     private void startRound() {
-        if (playerUnits.isEmpty())
+        if (player.getBoughtUnits().isEmpty())
             return;
 
         logger.info("Starting round");
 
+        player.startRound();
+        enemy.startRound();
+
+        enemy.addCoins(10);
+        player.addCoins(10);
+
         roundCounter++;
-        coins += 10;
-
-        for (Class<? extends Unit> playerUnit : playerUnits) {
-            enemyRoundUnitsToSpawn.add(playerUnit);
-            playerRoundUnitsToSpawn.add(playerUnit);
-        }
-
-        Collections.shuffle(enemyRoundUnitsToSpawn);
-        Collections.shuffle(playerRoundUnitsToSpawn);
-    }
-
-    private void spawnRoundUnit() {
-        if (!enemyRoundUnitsToSpawn.isEmpty()) {
-            var unitClazz = enemyRoundUnitsToSpawn.remove(0);
-            logger.info("Spawning " + unitClazz);
-            try {
-                Unit unit = (Unit) ClassReflection.getConstructor(unitClazz, Game.class, boolean.class).newInstance(this, false);
-                roundUnits.add(unit);
-                addActor(unit);
-            } catch (ReflectionException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (!playerRoundUnitsToSpawn.isEmpty()) {
-            var unitClazz = playerRoundUnitsToSpawn.remove(0);
-            logger.info("Spawning " + unitClazz);
-            try {
-                Unit unit = (Unit) ClassReflection.getConstructor(unitClazz, Game.class, boolean.class).newInstance(this, true);
-                roundUnits.add(unit);
-                addActor(unit);
-            } catch (ReflectionException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     public void spawnParticle(TextureAtlas.AtlasRegion texture, float x, float y, float duration) {
@@ -182,7 +148,9 @@ public class Game extends Stage {
         particle.addAction(action);
     }
 
-    public void registerPlayerUnit(Class<? extends Unit> unitClazz) {
-        playerUnits.add(unitClazz);
+    public Player getOtherPlayer(Player player) {
+        if (this.player == player)
+            return enemy;
+        return this.player;
     }
 }

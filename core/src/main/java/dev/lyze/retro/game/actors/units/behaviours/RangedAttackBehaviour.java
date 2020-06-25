@@ -20,13 +20,13 @@ public class RangedAttackBehaviour extends Behaviour {
     public void tick(float duration) {
         boolean hit = false;
 
-        for (Unit loopUnit : unit.getGame().getRoundUnits()) {
-            if (unit.isPlayerUnit() != loopUnit.isPlayerUnit()) {
+        for (Unit otherUnit : unit.getGame().getOtherPlayer(unit.getPlayer()).getRoundUnits()) {
+            if (!otherUnit.isDead()) {
                 for (int i = 1; i <= fields; i++) {
                     var nextPathPoint = unit.getPathPoints().get(unit.getCurrentPoint() + i);
-                    if (unit.getGame().getMap().mapCoordsEqualsPixelCoords(nextPathPoint.getX(), nextPathPoint.getY(), (int) loopUnit.getX(), (int) loopUnit.getY())) {
-                        logger.info(unit.toString() + " hit " + loopUnit.toString());
-                        loopUnit.damage(damage + unit.getGame().getUnitUpgrades().get(unit.getClass()));
+                    if (unit.getGame().getMap().mapCoordsEqualsPixelCoords(nextPathPoint.getX(), nextPathPoint.getY(), (int) otherUnit.getX(), (int) otherUnit.getY())) {
+                        logger.info(unit.toString() + " hit " + otherUnit.toString());
+                        otherUnit.damage(damage + unit.getPlayer().getUpgrades().get(unit.getClass()));
                         hit = true;
                     }
                 }

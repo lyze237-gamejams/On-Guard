@@ -8,7 +8,6 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 import static com.badlogic.gdx.graphics.g2d.Batch.*;
-import static com.badlogic.gdx.graphics.g2d.Batch.U2;
 
 // https://www.badlogicgames.com/forum/viewtopic.php?t=16368#p74103
 // better solution: render to framebuffer and scale that one?

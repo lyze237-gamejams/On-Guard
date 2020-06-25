@@ -32,14 +32,14 @@ public class GameUi extends Stage {
 
         table.add(new CoinButton(game, "Buttons/Stats/Stat_Coins", "Buttons/Stats/Stat_Coins")).padTop(1);
         table.add(new HealthButton(game, "Buttons/Stats/Stat_Health", "Buttons/Stats/Stat_Health")).padTop(1).row();
-        table.add(new UnitButton(SnakeUnit.class, 1, game, "Buttons/Snake/Snake_Button_Up", "Buttons/Snake/Snake_Button_Down")).padTop(1);
-        table.add(new UpgradeButton(SnakeUnit.class, 2, game, "Buttons/Upgrade/Snake_Upgrade_Up", "Buttons/Upgrade/Snake_Upgrade_Down")).padTop(1).row();
-        table.add(new UnitButton(GuardUnit.class, 9, game, "Buttons/Guard/Guard_Button_Up", "Buttons/Guard/Guard_Button_Down")).padTop(1);
-        table.add(new UpgradeButton(GuardUnit.class, 2, game, "Buttons/Upgrade/Snake_Upgrade_Up", "Buttons/Upgrade/Snake_Upgrade_Down")).padTop(1).row();
-        table.add(new UnitButton(MageUnit.class, 3, game, "Buttons/Mage/Mage_Button_Up", "Buttons/Mage/Mage_Button_Down")).padTop(1);
-        table.add(new UpgradeButton(MageUnit.class, 2, game, "Buttons/Upgrade/Snake_Upgrade_Up", "Buttons/Upgrade/Snake_Upgrade_Down")).padTop(1).row();
-        table.add(new UnitButton(SamuraiUnit.class, 5, game, "Buttons/Samurai/Samurai_Button_Up", "Buttons/Samurai/Samurai_Button_Down")).padTop(1);
-        table.add(new UpgradeButton(SamuraiUnit.class, 2, game, "Buttons/Upgrade/Snake_Upgrade_Up", "Buttons/Upgrade/Snake_Upgrade_Down")).padTop(1).row();
+        table.add(new UnitButton(SnakeUnit.class, game, "Buttons/Snake/Snake_Button_Up", "Buttons/Snake/Snake_Button_Down")).padTop(1);
+        table.add(new UpgradeButton(SnakeUnit.class, game, "Buttons/Upgrade/Snake_Upgrade_Up", "Buttons/Upgrade/Snake_Upgrade_Down")).padTop(1).row();
+        table.add(new UnitButton(GuardUnit.class, game, "Buttons/Guard/Guard_Button_Up", "Buttons/Guard/Guard_Button_Down")).padTop(1);
+        table.add(new UpgradeButton(GuardUnit.class, game, "Buttons/Upgrade/Snake_Upgrade_Up", "Buttons/Upgrade/Snake_Upgrade_Down")).padTop(1).row();
+        table.add(new UnitButton(MageUnit.class, game, "Buttons/Mage/Mage_Button_Up", "Buttons/Mage/Mage_Button_Down")).padTop(1);
+        table.add(new UpgradeButton(MageUnit.class, game, "Buttons/Upgrade/Snake_Upgrade_Up", "Buttons/Upgrade/Snake_Upgrade_Down")).padTop(1).row();
+        table.add(new UnitButton(SamuraiUnit.class, game, "Buttons/Samurai/Samurai_Button_Up", "Buttons/Samurai/Samurai_Button_Down")).padTop(1);
+        table.add(new UpgradeButton(SamuraiUnit.class, game, "Buttons/Upgrade/Snake_Upgrade_Up", "Buttons/Upgrade/Snake_Upgrade_Down")).padTop(1).row();
         table.add(new AbilityButton(game, "Buttons/Ability/Ability_Button_Up", "Buttons/Ability/Ability_Button_Down")).padTop(1);
         table.add(new SoundButton(game, "Buttons/Sound/Sound_Button_On", "Buttons/Sound/Sound_Button_Off")).padTop(1).row();
 

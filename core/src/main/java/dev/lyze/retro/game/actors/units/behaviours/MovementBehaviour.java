@@ -27,10 +27,7 @@ public class MovementBehaviour extends Behaviour {
 
         moveAction.reset();
 
-        for (Unit roundUnit : unit.getGame().getRoundUnits()) {
-            if (roundUnit.isPlayerUnit() == unit.isPlayerUnit())
-                continue;
-
+        for (Unit roundUnit : unit.getGame().getOtherPlayer(unit.getPlayer()).getRoundUnits()) {
             if (roundUnit.getPathPoints().get(roundUnit.getCurrentPoint()).equals(unit.getPathPoints().get(unit.getCurrentPoint() + 1)))
                 return;
         }

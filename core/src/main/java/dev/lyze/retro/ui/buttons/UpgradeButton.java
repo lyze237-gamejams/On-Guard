@@ -5,13 +5,12 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.github.czyzby.kiwi.log.Logger;
 import com.github.czyzby.kiwi.log.LoggerService;
+import dev.lyze.retro.Stats;
 import dev.lyze.retro.game.Game;
 import dev.lyze.retro.game.actors.units.Unit;
 
-import javax.swing.*;
-
 public class UpgradeButton extends Button {
-    private Logger logger = LoggerService.forClass(UpgradeButton.class);
+    private static final Logger logger = LoggerService.forClass(UpgradeButton.class);
 
     private final Class<? extends Unit> unit;
     private int price;
@@ -21,15 +20,16 @@ public class UpgradeButton extends Button {
 
     private boolean buttonState;
 
-    public UpgradeButton(Class<? extends Unit> unit, int price, Game game, String up, String down) {
+    public UpgradeButton(Class<? extends Unit> unit, Game game, String up, String down) {
         super(game, up, down);
 
         this.unit = unit;
-        this.price = price;
+        this.price = Stats.UPGRADE_PRICE;
 
         numbersFont = game.getAss().getNumbersFont();
 
-        game.getUnitUpgrades().put(unit, 0);
+        game.getPlayer().getUpgrades().put(unit, 0);
+        game.getEnemy().getUpgrades().put(unit, 0);
     }
 
     @Override
@@ -38,22 +38,19 @@ public class UpgradeButton extends Button {
             if (getButtonFrame() + 1 >= getButtonFramesCount())
                 return;
 
-            if (game.getCoins() < price)
-                return;
-
-
-            if (!game.getPlayerUnits().contains(unit))
+            if (!game.getPlayer().getBoughtUnits().contains(unit))
                 return; // didn't buy yet so don't allow user to upgrade unit
 
-            game.setCoins(game.getCoins() - price);
+            if (game.getPlayer().subtractCoins(price))
+            {
+                game.getPlayer().getUpgrades().replace(unit, game.getPlayer().getUpgrades().get(unit) + 1);
+                setButtonFrame(getButtonFrame() + 1);
 
-            game.getUnitUpgrades().replace(unit, game.getUnitUpgrades().get(unit) + 1);
-            setButtonFrame(getButtonFrame() + 1);
+                logger.info("Buying upgrade: " + this + " Total: " + game.getPlayer().getUpgrades().get(unit));
 
-            logger.info("Buying upgrade: " + this + " Total: " + game.getUnitUpgrades().get(unit));
-
-            if ((price *= 2) > 9)
-                price = 9;
+                if ((price *= 2) > 9)
+                    price = 9;
+            }
         }
     }
 

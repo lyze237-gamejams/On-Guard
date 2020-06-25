@@ -2,7 +2,6 @@ package dev.lyze.retro.ui.buttons;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g3d.particles.values.LineSpawnShapeValue;
 import com.badlogic.gdx.math.Vector2;
 import dev.lyze.retro.game.Game;
 
@@ -34,6 +33,6 @@ public class HealthButton extends Button {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
 
-        numbersFont.draw(batch, String.valueOf(game.getHealth()), numberFontCoords.x, numberFontCoords.y);
+        numbersFont.draw(batch, String.valueOf(game.getPlayer().getHealth()), numberFontCoords.x, numberFontCoords.y);
     }
 }

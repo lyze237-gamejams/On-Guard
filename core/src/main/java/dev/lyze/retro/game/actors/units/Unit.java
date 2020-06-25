@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import dev.lyze.retro.game.Game;
+import dev.lyze.retro.game.Player;
 import dev.lyze.retro.game.actors.units.behaviours.Behaviour;
 import dev.lyze.retro.utils.IntVector2;
 import lombok.Getter;
@@ -25,7 +26,7 @@ public abstract class Unit extends Image {
     protected int currentPoint = 0;
 
     @Getter
-    private boolean playerUnit;
+    protected Player player;
 
     @Getter
     private int health;
@@ -35,16 +36,16 @@ public abstract class Unit extends Image {
     private int currentTextureIndex;
 
 
-    public Unit(Game game, Array<TextureAtlas.AtlasRegion> atlasRegion, boolean playerUnit, int health) {
+    public Unit(Game game, Array<TextureAtlas.AtlasRegion> atlasRegion, Player player, int health) {
         super(atlasRegion.first());
         this.game = game;
-        this.playerUnit = playerUnit;
+        this.player = player;
         this.health = health;
         movementTextures = new Array<>();
         atlasRegion.forEach(t -> movementTextures.add(new TextureRegionDrawable(t)));
 
         pathPoints = game.getMap().getPathPoints();
-        if (playerUnit) {
+        if (player.isHuman()) {
             Collections.reverse(pathPoints = new ArrayList<>(pathPoints));
             //sprite.flip(false, true);
         }
@@ -83,13 +84,13 @@ public abstract class Unit extends Image {
     }
 
     public boolean isDead() {
-        return health + game.getUnitUpgrades().get(getClass()) <= 0;
+        return health + player.getUpgrades().get(getClass()) <= 0;
     }
 
     @Override
     public String toString() {
         return getClass().getSimpleName() + "{" +
-                "playerUnit=" + playerUnit +
+                "Player.isHuman()=" + player.isHuman() +
                 ", health=" + health +
                 '}';
     }
