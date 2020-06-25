@@ -3,10 +3,16 @@ package dev.lyze.retro.ui.buttons;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
+import com.github.czyzby.kiwi.log.Logger;
+import com.github.czyzby.kiwi.log.LoggerService;
 import dev.lyze.retro.game.Game;
 import dev.lyze.retro.game.actors.units.Unit;
 
+import javax.swing.*;
+
 public class UpgradeButton extends Button {
+    private Logger logger = LoggerService.forClass(UpgradeButton.class);
+
     private final Class<? extends Unit> unit;
     private int price;
 
@@ -44,6 +50,8 @@ public class UpgradeButton extends Button {
             game.getUnitUpgrades().replace(unit, game.getUnitUpgrades().get(unit) + 1);
             setButtonFrame(getButtonFrame() + 1);
 
+            logger.info("Buying upgrade: " + this + " Total: " + game.getUnitUpgrades().get(unit));
+
             if ((price *= 2) > 9)
                 price = 9;
         }
@@ -63,5 +71,13 @@ public class UpgradeButton extends Button {
         super.draw(batch, parentAlpha);
 
         numbersFont.draw(batch, String.valueOf(price), numberFontCoords.x, numberFontCoords.y - (buttonState ? 1 : 0));
+    }
+
+    @Override
+    public String toString() {
+        return "UpgradeButton{" +
+                "unit=" + unit +
+                ", price=" + price +
+                '}';
     }
 }
