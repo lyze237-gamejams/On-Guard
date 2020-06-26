@@ -67,7 +67,8 @@ public abstract class Unit extends Image {
             super.act(delta);
         }
         catch (Exception e) {
-            logger.error(e, "Movement crashed, lol");
+            damage(99999);
+            logger.error(e, "Movement crashed, lol. Killing myself. Goodbye cruel world.");
         }
 
         if ((timeSinceLastTextureSwap += delta) > 0.2f) {

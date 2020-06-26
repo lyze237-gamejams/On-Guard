@@ -81,6 +81,7 @@ public class Game extends Stage {
             var playerUnitsIterator = player.getRoundUnits().listIterator();
             var enemyUnitsIterator = enemy.getRoundUnits().listIterator();
 
+            var unitReachedFinish = false;
             while (playerUnitsIterator.hasNext() || enemyUnitsIterator.hasNext()) {
                 ListIterator<Unit> pickedIterator;
                 if (playerUnitsIterator.hasNext() && enemyUnitsIterator.hasNext()) {
@@ -107,7 +108,7 @@ public class Game extends Stage {
                     pickedIterator.remove();
                     getActors().removeValue(unit, true);
                     player.addCoins(1);
-                    ass.playRandomSound(ass.getWins());
+                    unitReachedFinish = true;
                     continue;
                 } else if (!unit.getPlayer().isHuman() && unit.getPathPoints().get(unit.getCurrentPoint()).equals(map.getFinishPoint())) {
                     logger.info("Enemy unit " + unit + " reached player base");
@@ -115,12 +116,15 @@ public class Game extends Stage {
                     getActors().removeValue(unit, true);
                     player.addHealth(- 1);
                     enemy.addCoins(1);
-                    ass.playRandomSound(ass.getWins());
+                    unitReachedFinish = true;
                     continue;
                 }
 
                 unit.tick(localUnitTickTime);
             }
+
+            if (unitReachedFinish)
+                ass.playRandomSound(ass.getWins());
         }
     }
 
