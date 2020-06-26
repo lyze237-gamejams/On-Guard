@@ -37,8 +37,8 @@ public class Map extends Actor {
     @Getter
     private int tileWidth, tileHeight;
 
-    public Map(Game game) {
-        map = game.getAss().getMap();
+    public Map(Game game, int mapIndex) {
+        map = game.getAss().getMaps().get(mapIndex);
         renderer = new OrthogonalTiledMapRendererBleeding(map, 1);
 
         parseMap();
@@ -78,7 +78,7 @@ public class Map extends Actor {
                 }
             }
 
-            logger.info("Going {0}", currentDirection);
+            //logger.info("Going {0}", currentDirection);
             currentPosition.add(currentDirection.getAddToX(), currentDirection.getAddToY());
             pathPoints.add(new IntVector2(currentPosition));
         } while (!currentPosition.equals(finishPoint));

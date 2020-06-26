@@ -23,7 +23,7 @@ public class Assets {
     private static final String GAMEBOY_FONT_PATH = "fonts/EarlyGameBoy.fnt";
     private static final String NUMBERS_FONT_PATH = "fonts/Numbers.fnt";
 
-    public static final String MAP_PATH = "maps/Test.tmx";
+    public static final String[] MAP_PATHS = new String[] { "maps/Map1.tmx", "maps/Map2.tmx", "maps/Map3.tmx", "maps/Map4.tmx" };
 
     public static final String[] MELEE_SOUND_PATHS = new String[] { "sounds/Sword 1.ogg", "sounds/Sword 2.ogg" };
 
@@ -48,20 +48,24 @@ public class Assets {
     @Getter
     private Array<TextureAtlas.AtlasRegion> mageUnit;
 
-    @Getter private BitmapFont gameboyFont, numbersFont;
+    @Getter
+    private BitmapFont gameboyFont, numbersFont;
 
     @Getter
     private TextureAtlas.AtlasRegion hitParticle, rangedAttackParticle;
     private TextureAtlas atlas;
 
     @Getter
-    private TiledMap map;
+    private List<TiledMap> maps;
 
     @Getter
     private List<Sound> melees, rangedes, coins, wins, buyButtons, upgradeButtons, potionButtons;
 
     @Getter @Setter
     private boolean soundMuted;
+
+    @Getter
+    private TextureAtlas.AtlasRegion mainMenu;
 
     public Assets() {
         setupAssetManager();
@@ -70,7 +74,7 @@ public class Assets {
     }
 
     private void setupAssets() {
-        map = assMan.get(MAP_PATH);
+        maps = Arrays.stream(MAP_PATHS).map(map -> assMan.get(map, TiledMap.class)).collect(Collectors.toList());
 
         gameboyFont = assMan.get(GAMEBOY_FONT_PATH);
         numbersFont = assMan.get(NUMBERS_FONT_PATH);
@@ -79,7 +83,7 @@ public class Assets {
     private void setupAssetManager() {
         assMan.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
 
-        assMan.load(MAP_PATH, TiledMap.class);
+        Arrays.stream(MAP_PATHS).forEach(map -> assMan.load(map, TiledMap.class));
 
         assMan.load(ATLAS_PATH, TextureAtlas.class);
 
@@ -106,6 +110,8 @@ public class Assets {
 
         hitParticle = atlas.findRegion("Particles/Hit");
         rangedAttackParticle = atlas.findRegion("Particles/Ranged_Attack");
+
+        mainMenu = atlas.findRegion("MainMenu/MainMenu");
 
         melees = Arrays.stream(MELEE_SOUND_PATHS).map(sound -> assMan.get(sound, Sound.class)).collect(Collectors.toList());
         rangedes = Arrays.stream(RANGED_SOUND_PATHS).map(sound -> assMan.get(sound, Sound.class)).collect(Collectors.toList());
