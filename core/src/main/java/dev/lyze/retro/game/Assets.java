@@ -9,6 +9,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.utils.Array;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -58,6 +59,9 @@ public class Assets {
 
     @Getter
     private List<Sound> melees, rangedes, coins, wins, buyButtons, upgradeButtons, potionButtons;
+
+    @Getter @Setter
+    private boolean soundMuted;
 
     public Assets() {
         setupAssetManager();
@@ -134,8 +138,9 @@ public class Assets {
         return regions;
     }
 
-    private Random random = new Random();
+    private final Random random = new Random();
     public void playRandomSound(List<Sound> sounds) {
-        sounds.get(random.nextInt(sounds.size())).play(0.5f);
+        if (!soundMuted)
+            sounds.get(random.nextInt(sounds.size())).play(0.5f);
     }
 }

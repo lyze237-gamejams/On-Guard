@@ -1,5 +1,6 @@
 package dev.lyze.retro.game.actors.units.behaviours;
 
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.ScaleByAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import dev.lyze.retro.game.actors.units.Unit;
@@ -14,9 +15,9 @@ public abstract class Behaviour {
     public abstract void tick(float duration);
 
     protected void bobUnit(float duration) {
-        var sequence = new SequenceAction();
-        var up = new ScaleByAction();
-        var down = new ScaleByAction();
+        var sequence = Actions.action(SequenceAction.class);
+        var up = Actions.action(ScaleByAction.class);
+        var down = Actions.action(ScaleByAction.class);
 
         up.setAmount(0.1f);
         up.setDuration(duration * 0.1f);
