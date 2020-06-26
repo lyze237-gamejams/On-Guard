@@ -2,6 +2,7 @@ package dev.lyze.retro.game;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -39,6 +40,9 @@ public class Assets {
 
     public static final String[] POTION_SOUND_PATH = new String[] { "sounds/Magic Dark.ogg" };
 
+    public static final String MAIN_MENU_MUSIC_PATH = "music/BoosterTitle.ogg";
+    public static final String GAME_MUSIC_PATH = "music/BoosterLevel_1.ogg";
+
     @Getter
     private Array<TextureAtlas.AtlasRegion> snakeUnit;
     @Getter
@@ -67,6 +71,9 @@ public class Assets {
     @Getter
     private TextureAtlas.AtlasRegion mainMenu;
 
+    @Getter
+    private Music mainMenuMusic, gameMenuMusic;
+
     public Assets() {
         setupAssetManager();
         extractTextureRegions();
@@ -78,6 +85,13 @@ public class Assets {
 
         gameboyFont = assMan.get(GAMEBOY_FONT_PATH);
         numbersFont = assMan.get(NUMBERS_FONT_PATH);
+
+        mainMenuMusic = assMan.get(MAIN_MENU_MUSIC_PATH);
+        mainMenuMusic.setLooping(true);
+        mainMenuMusic.setVolume(0.5f);
+        gameMenuMusic = assMan.get(GAME_MUSIC_PATH);
+        gameMenuMusic.setLooping(true);
+        gameMenuMusic.setVolume(0.5f);
     }
 
     private void setupAssetManager() {
@@ -97,6 +111,9 @@ public class Assets {
         Arrays.stream(BUY_SOUND_PATHS).forEach(sound -> assMan.load(sound, Sound.class));
         Arrays.stream(UPGRADE_SOUND_PATHS).forEach(sound -> assMan.load(sound, Sound.class));
         Arrays.stream(POTION_SOUND_PATH).forEach(sound -> assMan.load(sound, Sound.class));
+
+        assMan.load(MAIN_MENU_MUSIC_PATH, Music.class);
+        assMan.load(GAME_MUSIC_PATH, Music.class);
 
         assMan.finishLoading();
     }
@@ -147,6 +164,14 @@ public class Assets {
     private final Random random = new Random();
     public void playRandomSound(List<Sound> sounds) {
         if (!soundMuted)
-            sounds.get(random.nextInt(sounds.size())).play(0.5f);
+            sounds.get(random.nextInt(sounds.size())).play(0.35f);
+    }
+
+    public void playMusic(Music music) {
+        mainMenuMusic.stop();
+        gameMenuMusic.stop();
+
+        if (!soundMuted)
+            music.play();
     }
 }

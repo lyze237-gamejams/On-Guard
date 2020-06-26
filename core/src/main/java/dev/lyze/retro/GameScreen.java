@@ -35,11 +35,12 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void show() {
+		ass.playMusic(ass.getGameMenuMusic());
 	}
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
+		Gdx.gl.glClearColor(0.0588f, 0.2196f, 0.0588f, 1);
 		Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
 
 		game.getViewport().apply();

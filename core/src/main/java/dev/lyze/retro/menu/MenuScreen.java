@@ -14,9 +14,12 @@ import dev.lyze.retro.game.Assets;
 /** First screen of the application. Displayed after the application is created. */
 public class MenuScreen extends Stage implements Screen {
 	private static final Logger logger = LoggerService.forClass(MenuScreen.class);
+	private final Assets ass;
 
 	public MenuScreen(RetroTowerdefence towerdefence, Assets ass) {
 		super (new FitViewport(160, 144));
+
+		this.ass = ass;
 
 		addActor(new Image(ass.getMainMenu()));
 
@@ -30,11 +33,12 @@ public class MenuScreen extends Stage implements Screen {
 
 	@Override
 	public void show() {
+		ass.playMusic(ass.getMainMenuMusic());
 	}
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
+		Gdx.gl.glClearColor(0.0588f, 0.2196f, 0.0588f, 1);
 		Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
 
 		getViewport().apply();
