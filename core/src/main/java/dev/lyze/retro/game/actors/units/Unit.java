@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
+import com.github.czyzby.kiwi.log.Logger;
+import com.github.czyzby.kiwi.log.LoggerService;
 import dev.lyze.retro.game.Game;
 import dev.lyze.retro.game.Player;
 import dev.lyze.retro.game.actors.units.behaviours.Behaviour;
@@ -15,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public abstract class Unit extends Image {
+    private static final Logger logger = LoggerService.forClass(Unit.class);
+
     @Getter
     protected Game game;
 
@@ -59,7 +63,12 @@ public abstract class Unit extends Image {
 
     @Override
     public void act(float delta) {
-        super.act(delta);
+        try {
+            super.act(delta);
+        }
+        catch (Exception e) {
+            logger.error(e, "Movement crashed, lol");
+        }
 
         if ((timeSinceLastTextureSwap += delta) > 0.2f) {
             timeSinceLastTextureSwap = 0;

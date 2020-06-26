@@ -15,6 +15,7 @@ public class MovementBehaviour extends Behaviour {
         super(unit);
 
         this.sleepTicks = sleepTicks;
+        moveAction.setActor(unit);
     }
 
     @Override
