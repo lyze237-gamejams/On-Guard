@@ -43,7 +43,7 @@ task texturePacker {
 
 subprojects {
 	version = '0.0.' + getGitHash()
-	ext.appName = 'RetroTowerdefence'
+	ext.appName = 'OnGuard'
 	repositories {
 		mavenLocal()
 		mavenCentral()

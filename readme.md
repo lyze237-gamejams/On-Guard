@@ -1,10 +1,10 @@
-# On Guard
+![logo](logo.png)
 
 Libgdx game jam project - june 2020
 
 Topic was "Tower defence without towers"
 
-Play it: https://lyze237.itch.io/retro-towerdefence
+Play it: https://lyze237.itch.io/on-guard
 
 
 ### Credits

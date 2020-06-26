@@ -69,21 +69,21 @@ jobs:
         run: ./gradlew lwjgl3:jpackage
 
       - name: Fix file names
-        run: mv lwjgl3/build/lib/*.jar Retro-Towerdefence_linux.jar && mv lwjgl3/build/jpackage/*.deb Retro-Towerdefence.deb && mv lwjgl3/build/jpackage/*.rpm Retro-Towerdefence.rpm
+        run: mv lwjgl3/build/lib/*.jar OnGuard_linux.jar && mv lwjgl3/build/jpackage/*.deb OnGuard.deb && mv lwjgl3/build/jpackage/*.rpm OnGuard.rpm
 
 
 
       - name: Check if butler works
         run: ./butler -V
 
-      - run: ./butler push Retro-Towerdefence_linux.jar lyze237/retro-towerdefence:linux-jar
+      - run: ./butler push OnGuard_linux.jar lyze237/on-guard:linux-jar
 
-      - run: ./butler push lwjgl3/build/jpackage/RetroTowerdefence lyze237/retro-towerdefence:linux-image
+      - run: ./butler push lwjgl3/build/jpackage/OnGuard lyze237/on-guard:linux-image
 
-      - run: ./butler push Retro-Towerdefence.deb lyze237/retro-towerdefence:linux-deb
-      - run: ./butler push Retro-Towerdefence.rpm lyze237/retro-towerdefence:linux-rpm
+      - run: ./butler push OnGuard.deb lyze237/on-guard:linux-deb
+      - run: ./butler push OnGuard.rpm lyze237/on-guard:linux-rpm
 
-      - run: ./butler push html/build/dist lyze237/retro-towerdefence:html
+      - run: ./butler push html/build/dist lyze237/on-guard:html
 
 
 
@@ -139,17 +139,17 @@ jobs:
         run: ./gradlew.bat lwjgl3:jpackage
 
       - name: Fix file names
-        run: mv lwjgl3/build/lib/*.jar Retro-Towerdefence_windows.jar && mv lwjgl3/build/jpackage/*.exe Retro-Towerdefence.exe && mv lwjgl3/build/jpackage/*.msi Retro-Towerdefence.msi
+        run: mv lwjgl3/build/lib/*.jar OnGuard_windows.jar && mv lwjgl3/build/jpackage/*.exe OnGuard.exe && mv lwjgl3/build/jpackage/*.msi OnGuard.msi
 
 
 
       - name: Check if butler works
         run: ./butler.exe -V
 
-      - run: ./butler push Retro-Towerdefence_windows.jar lyze237/retro-towerdefence:windows-jar
+      - run: ./butler push OnGuard_windows.jar lyze237/on-guard:windows-jar
 
-      - run: ./butler push lwjgl3/build/jpackage/RetroTowerdefence lyze237/retro-towerdefence:windows-image
+      - run: ./butler push lwjgl3/build/jpackage/OnGuard lyze237/on-guard:windows-image
 
-      - run: ./butler push Retro-Towerdefence.exe lyze237/retro-towerdefence:windows-exe
-      - run: ./butler push Retro-Towerdefence.msi lyze237/retro-towerdefence:windows-msi
+      - run: ./butler push OnGuard.exe lyze237/on-guard:windows-exe
+      - run: ./butler push OnGuard.msi lyze237/on-guard:windows-msi
 

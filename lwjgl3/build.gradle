@@ -59,7 +59,7 @@ runtime {
 			   'jdk.unsupported']
 
 	jpackage {
-		installerOptions += [ '--vendor', 'lyze.dev', '--description', 'Retro towerdefence - libgdx gamejam june 2020' ]
+		installerOptions += [ '--vendor', 'lyze.dev', '--description', 'OnGuard - Libgdx GameJam June 2020' ]
 		mainJar = jar.archiveFileName.get()
 		installerName = imageName = appName
 
