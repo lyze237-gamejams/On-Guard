@@ -17,7 +17,9 @@ public class AbilityButton extends Button {
         if (!state)
             return;
 
-        if (game.getPlayer().subtractCoins(price))
+        if (game.getPlayer().subtractCoins(price)) {
+            game.getAss().playRandomSound(game.getAss().getPotionButtons());
             game.getEnemy().getRoundUnits().forEach(u -> u.damage(1));
+        }
     }
 }

@@ -47,6 +47,7 @@ public class UpgradeButton extends Button {
                 setButtonFrame(getButtonFrame() + 1);
 
                 logger.info("Buying upgrade: " + this + " Total: " + game.getPlayer().getUpgrades().get(unit));
+                game.getAss().playRandomSound(game.getAss().getUpgradeButtons());
 
                 if ((price *= 2) > 9)
                     price = 9;

@@ -20,18 +20,23 @@ public class AttackBehaviour extends Behaviour {
         if (unit.getCurrentPoint() + 1 >= unit.getPathPoints().size())
             return;
 
+        var hit = false;
         var nextPathPoint = unit.getPathPoints().get(unit.getCurrentPoint() + 1);
         for (Unit otherUnit : unit.getGame().getOtherPlayer(unit.getPlayer()).getRoundUnits()) {
             if (!otherUnit.isDead()) {
                 if (unit.getGame().getMap().mapCoordsEqualsPixelCoords(nextPathPoint.getX(), nextPathPoint.getY(), (int) otherUnit.getX(), (int) otherUnit.getY())) {
                     logger.info(unit.toString() + " hit " + otherUnit.toString());
+                    unit.getGame().getAss().playRandomSound(unit.getGame().getAss().getMelees());
+
                     otherUnit.damage(damage + unit.getPlayer().getUpgrades().get(unit.getClass()));
 
-                    bobUnit(duration);
-
-                    return;
+                    hit = true;
                 }
             }
+        }
+
+        if (hit) {
+            bobUnit(duration);
         }
     }
 }
