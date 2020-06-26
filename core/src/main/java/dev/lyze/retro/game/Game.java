@@ -23,7 +23,7 @@ public class Game extends Stage {
     private Map map;
 
     @Getter
-    private final Assets ass = new Assets();
+    private final Assets ass;
 
     private float timeSinceLastTick;
     private final float roundTickTime = 0.3f;
@@ -37,10 +37,12 @@ public class Game extends Stage {
     @Getter
     private final Player player, enemy;
 
-    public Game() {
+    public Game(Assets ass, int map) {
         super(new FitViewport(160, 144));
 
-        addActor(map = new Map(this));
+        this.ass = ass;
+
+        addActor(this.map = new Map(this, map));
 
         player = new Player(this, true);
         enemy = new Player(this, false);

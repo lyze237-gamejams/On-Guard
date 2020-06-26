@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL30;
 import com.github.czyzby.kiwi.log.Logger;
 import com.github.czyzby.kiwi.log.LoggerService;
+import dev.lyze.retro.game.Assets;
 import dev.lyze.retro.game.Game;
 import dev.lyze.retro.ui.GameUi;
 
@@ -15,8 +16,12 @@ public class GameScreen implements Screen {
 	private GameUi ui;
 	private Game game;
 
-	public GameScreen() {
-		setupGame();
+	private final Assets ass;
+
+	public GameScreen(Assets ass, int map) {
+	    this.ass = ass;
+
+		setupGame(map);
 		setupUi();
 	}
 
@@ -24,8 +29,8 @@ public class GameScreen implements Screen {
 	    ui = new GameUi(game);
 	}
 
-	private void setupGame() {
-		game = new Game();
+	private void setupGame(int map) {
+		game = new Game(ass, map);
 	}
 
 	@Override
