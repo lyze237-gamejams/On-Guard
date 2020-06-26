@@ -82,9 +82,7 @@ public class Game extends Stage {
             while (playerUnitsIterator.hasNext() || enemyUnitsIterator.hasNext()) {
                 ListIterator<Unit> pickedIterator;
                 if (playerUnitsIterator.hasNext() && enemyUnitsIterator.hasNext()) {
-                    var playerSide = random.nextBoolean();
-                    if (roundCounter >= 2) // first round don't shuffle so player wins
-                        playerSide = true;
+                    var playerSide = roundCounter < 2 || random.nextBoolean(); // first round don't shuffle so player wins
                     pickedIterator = playerSide ? playerUnitsIterator : enemyUnitsIterator;
                 }
                 else if (playerUnitsIterator.hasNext()) {
@@ -107,6 +105,7 @@ public class Game extends Stage {
                     pickedIterator.remove();
                     getActors().removeValue(unit, true);
                     player.addCoins(1);
+                    ass.playRandomSound(ass.getWins());
                     continue;
                 } else if (!unit.getPlayer().isHuman() && unit.getPathPoints().get(unit.getCurrentPoint()).equals(map.getFinishPoint())) {
                     logger.info("Enemy unit " + unit + " reached player base");
@@ -114,6 +113,7 @@ public class Game extends Stage {
                     getActors().removeValue(unit, true);
                     player.addHealth(- 1);
                     enemy.addCoins(1);
+                    ass.playRandomSound(ass.getWins());
                     continue;
                 }
 
