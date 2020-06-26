@@ -10,5 +10,6 @@ public class SoundButton extends Button {
     @Override
     protected void setState(boolean state) {
         game.getAss().setSoundMuted(state);
+        game.getAss().playMusic(game.getAss().getGameMenuMusic());
     }
 }
