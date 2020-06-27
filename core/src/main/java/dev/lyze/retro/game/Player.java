@@ -91,7 +91,7 @@ public class Player {
 
     private BotTarget masterTarget = BotTarget.BUY;
     private Class<? extends Unit> subTarget = SnakeUnit.class;
-    private Random random = new Random(1);
+    private Random random = new Random();
 
     public void act(float delta) {
         if (isHuman()) // npc act

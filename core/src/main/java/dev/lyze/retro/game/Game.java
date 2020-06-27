@@ -30,7 +30,7 @@ public class Game extends Stage {
     private final float roundTickTime = 0.3f;
     private final float unitTickTime = 0.1f;
 
-    private final Random random = new Random(1);
+    private final Random random = new Random();
 
     @Getter
     private int roundCounter;
