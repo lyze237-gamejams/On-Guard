@@ -2,13 +2,16 @@ package dev.lyze.retro.menu;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.Array;
 import dev.lyze.retro.game.Assets;
 
 public class GameOverButton extends Image {
     private final BitmapFont numbersFont;
-    private Vector2 coinsFontCoords, roundsFontCoords;
+    private final TextureAtlas.AtlasRegion lyze;
+    private Vector2 coinsFontCoords, roundsFontCoords, lyzeCoords;
 
     private Assets ass;
     private int rounds, coins;
@@ -18,6 +21,8 @@ public class GameOverButton extends Image {
 
         this.rounds = rounds;
         this.coins = coins;
+
+        this.lyze = ass.getLyze().get(rounds >= 20 ? 1 : 0);
 
         numbersFont = ass.getNumbersFont();
 
@@ -29,11 +34,15 @@ public class GameOverButton extends Image {
         super.act(delta);
 
         if (roundsFontCoords == null || roundsFontCoords .x < 100) {
-            roundsFontCoords = localToStageCoordinates(new Vector2(56, numbersFont.getLineHeight() + 30));
+            roundsFontCoords = localToStageCoordinates(new Vector2(63, numbersFont.getLineHeight() + 30));
         }
 
         if (coinsFontCoords == null || coinsFontCoords.x < 100) {
-            coinsFontCoords = localToStageCoordinates(new Vector2(56, numbersFont.getLineHeight() + 22));
+            coinsFontCoords = localToStageCoordinates(new Vector2(63, numbersFont.getLineHeight() + 22));
+        }
+
+        if (lyzeCoords == null || lyzeCoords.x < 20) {
+            lyzeCoords = localToStageCoordinates(new Vector2(8, getHeight() - 40));
         }
     }
 
@@ -43,5 +52,8 @@ public class GameOverButton extends Image {
 
         numbersFont.draw(batch, String.valueOf(rounds), roundsFontCoords.x, roundsFontCoords.y);
         numbersFont.draw(batch, String.valueOf(coins), coinsFontCoords.x, coinsFontCoords.y);
+
+        batch.draw(lyze, lyzeCoords.x, lyzeCoords.y);
+
     }
 }
