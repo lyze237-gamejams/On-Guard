@@ -14,9 +14,9 @@ public class Stats {
 
     public static int UPGRADE_AMOUNT = 5;
 
-    public static UnitStats SNAKE = new UnitStats(1, 1, 2, 1);
+    public static UnitStats SNAKE = new UnitStats(1, 3, 2, 1);
     public static UnitStats GUARD = new UnitStats(9, 8, 4, 1);
-    public static UnitStats MAGE = new UnitStats(3, 1, 1, 3);
+    public static UnitStats MAGE = new UnitStats(6, 1, 1, 3);
     public static UnitStats SAMURAI = new UnitStats(5, 1, 4, 1);
 
     public static int ABILITY_PRICE = 30;

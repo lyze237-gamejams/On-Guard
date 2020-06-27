@@ -9,6 +9,8 @@ public class RangedAttackBehaviour extends Behaviour {
 
     private int damage, fields;
 
+    private int ticks;
+
     public RangedAttackBehaviour(Unit unit, int damage, int fields) {
         super(unit);
 
@@ -19,6 +21,9 @@ public class RangedAttackBehaviour extends Behaviour {
     @Override
     public void tick(float duration) {
         boolean hit = false;
+
+        if (ticks++ % 2 == 0)
+            return;
 
         for (Unit otherUnit : unit.getGame().getOtherPlayer(unit.getPlayer()).getRoundUnits()) {
             if (!otherUnit.isDead()) {
