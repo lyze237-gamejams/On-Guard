@@ -69,7 +69,7 @@ public class Assets {
     private boolean soundMuted;
 
     @Getter
-    private TextureAtlas.AtlasRegion mainMenu;
+    private TextureAtlas.AtlasRegion mainMenu, gameOverButton;
 
     @Getter
     private Music mainMenuMusic, gameMenuMusic;
@@ -129,6 +129,7 @@ public class Assets {
         rangedAttackParticle = atlas.findRegion("Particles/Ranged_Attack");
 
         mainMenu = atlas.findRegion("MainMenu/MainMenu");
+        gameOverButton = atlas.findRegion("MainMenu/GameOver");
 
         melees = Arrays.stream(MELEE_SOUND_PATHS).map(sound -> assMan.get(sound, Sound.class)).collect(Collectors.toList());
         rangedes = Arrays.stream(RANGED_SOUND_PATHS).map(sound -> assMan.get(sound, Sound.class)).collect(Collectors.toList());

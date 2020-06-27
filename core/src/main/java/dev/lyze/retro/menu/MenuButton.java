@@ -13,7 +13,7 @@ public class MenuButton extends Actor {
         addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                towerdefence.setScreen(new GameScreen(towerdefence.getAss(), map));
+                towerdefence.setScreen(new GameScreen(towerdefence, map));
                 return false;
             }
         });

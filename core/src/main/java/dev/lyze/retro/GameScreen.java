@@ -7,6 +7,7 @@ import com.github.czyzby.kiwi.log.Logger;
 import com.github.czyzby.kiwi.log.LoggerService;
 import dev.lyze.retro.game.Assets;
 import dev.lyze.retro.game.Game;
+import dev.lyze.retro.menu.MenuScreen;
 import dev.lyze.retro.ui.GameUi;
 
 /** First screen of the application. Displayed after the application is created. */
@@ -18,8 +19,11 @@ public class GameScreen implements Screen {
 
 	private final Assets ass;
 
-	public GameScreen(Assets ass, int map) {
-	    this.ass = ass;
+	private final RetroTowerdefence towerdefence;
+
+	public GameScreen(RetroTowerdefence towerdefence, int map) {
+	    this.ass = towerdefence.getAss();
+	    this.towerdefence = towerdefence;
 
 		setupGame(map);
 		setupUi();
@@ -50,6 +54,10 @@ public class GameScreen implements Screen {
 		ui.getViewport().apply();
 		ui.act(delta);
 		ui.draw();
+
+		if (game.getPlayer().getHealth() < 1) {
+		    towerdefence.setScreen(new MenuScreen(towerdefence, game.getRoundCounter(), game.getPlayer().getCoins()));
+		}
 	}
 
 	@Override

@@ -16,10 +16,10 @@ public class MenuScreen extends Stage implements Screen {
 	private static final Logger logger = LoggerService.forClass(MenuScreen.class);
 	private final Assets ass;
 
-	public MenuScreen(RetroTowerdefence towerdefence, Assets ass) {
+	public MenuScreen(RetroTowerdefence towerdefence) {
 		super (new FitViewport(160, 144));
 
-		this.ass = ass;
+		this.ass = towerdefence.getAss();
 
 		addActor(new Image(ass.getMainMenu()));
 
@@ -29,6 +29,12 @@ public class MenuScreen extends Stage implements Screen {
 		addActor(new MenuButton(towerdefence, 1, 104, 64, 48, 32));
 		addActor(new MenuButton(towerdefence, 2, 8, 8, 48, 32));
 		addActor(new MenuButton(towerdefence, 3, 104, 8, 48, 32));
+	}
+
+	public MenuScreen(RetroTowerdefence towerdefence, int gameOverRounds, int gameOverCoins) {
+	    this(towerdefence);
+
+	    addActor(new GameOverButton(towerdefence.getAss(), gameOverRounds, gameOverCoins));
 	}
 
 	@Override
