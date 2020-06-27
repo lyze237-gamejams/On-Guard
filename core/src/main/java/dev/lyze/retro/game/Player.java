@@ -72,6 +72,12 @@ public class Player {
         if (roundUnitsToSpawn.isEmpty())
             return;
 
+        for (Unit roundUnit : roundUnits) {
+            if (roundUnit.getCurrentPoint() == 0) {
+                return;
+            }
+        }
+
         var unitClazz = roundUnitsToSpawn.remove(0);
 
         try {
