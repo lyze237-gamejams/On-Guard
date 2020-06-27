@@ -4,9 +4,13 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
+import com.badlogic.gdx.backends.gwt.preloader.Preloader;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Panel;
 import dev.lyze.retro.RetroTowerdefence;
 
 /**
@@ -42,5 +46,20 @@ public class GwtLauncher extends GwtApplication {
     @Override
     public ApplicationListener createApplicationListener() {
         return new RetroTowerdefence();
+    }
+
+    @Override
+    public Preloader.PreloaderCallback getPreloaderCallback() {
+        return createPreloaderPanel(GWT.getHostPageBaseURL() + "assets/logo.png");
+    }
+
+    @Override
+    protected void adjustMeterPanel(Panel meterPanel, Style meterStyle) {
+        meterPanel.setStyleName("gdx-meter");
+        meterPanel.addStyleName("nostripes");
+        meterStyle.setProperty("backgroundColor", "#9bbc0f");
+        meterStyle.setProperty("backgroundImage", "none");
+	    Style meterPanelStyle = meterPanel.getElement().getStyle();
+	   meterPanelStyle.setProperty("backgroundColor", "#306230");
     }
 }
