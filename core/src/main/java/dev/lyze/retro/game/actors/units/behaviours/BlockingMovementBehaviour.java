@@ -19,9 +19,11 @@ public class BlockingMovementBehaviour extends Behaviour {
 
     @Override
     public void tick(float duration) {
-        if (currentSleepTicks++ < sleepTicks) {
+        if (currentSleepTicks++ < sleepTicks)
             return;
-        }
+
+        if (unit.getCurrentPoint() + 1 >= unit.getPathPoints().size())
+            return;
 
         currentSleepTicks = 0;
 

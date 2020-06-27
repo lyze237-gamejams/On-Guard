@@ -28,6 +28,9 @@ public class RangedAttackBehaviour extends Behaviour {
         for (Unit otherUnit : unit.getGame().getOtherPlayer(unit.getPlayer()).getRoundUnits()) {
             if (!otherUnit.isDead()) {
                 for (int i = 1; i <= fields; i++) {
+                    if (unit.getCurrentPoint() + i >= unit.getPathPoints().size())
+                        continue;
+
                     var nextPathPoint = unit.getPathPoints().get(unit.getCurrentPoint() + i);
                     if (unit.getGame().getMap().mapCoordsEqualsPixelCoords(nextPathPoint.getX(), nextPathPoint.getY(), (int) otherUnit.getX(), (int) otherUnit.getY())) {
                         unit.getGame().getAss().playRandomSound(unit.getGame().getAss().getRangedSounds());

@@ -113,6 +113,7 @@ public class Game extends Stage {
                     pickedIterator.remove();
                     getActors().removeValue(unit, true);
                     player.addCoins(Stats.COINS_PER_KILL);
+                    player.increaseUnitsEnemyReached();
                     unitReachedFinish = true;
                     continue;
                 } else if (!unit.getPlayer().isHuman() && unit.getPathPoints().get(unit.getCurrentPoint()).equals(map.getFinishPoint())) {
@@ -120,6 +121,7 @@ public class Game extends Stage {
                     getActors().removeValue(unit, true);
                     player.addHealth(- 1);
                     enemy.addCoins(Stats.COINS_PER_KILL);
+                    enemy.increaseUnitsEnemyReached();
                     unitReachedFinish = true;
                     continue;
                 }

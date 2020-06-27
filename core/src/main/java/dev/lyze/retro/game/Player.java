@@ -12,7 +12,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -42,6 +41,9 @@ public class Player {
     private ArrayList<Class<? extends Unit>> roundUnitsToSpawn = new ArrayList<>();
 
     private ArrayList<Class<? extends Unit>> unitClasses;
+
+    @Getter
+    private int unitsEnemyReachedAmount;
 
     public Player(Game game, boolean human) {
         this.game = game;
@@ -202,5 +204,10 @@ public class Player {
         }
 
         return false;
+    }
+
+    public void increaseUnitsEnemyReached() {
+        if (unitsEnemyReachedAmount++ % 20 == 0)
+            game.getOtherPlayer(this).addCoins(5);
     }
 }
