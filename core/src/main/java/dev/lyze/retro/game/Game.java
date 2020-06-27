@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.github.czyzby.kiwi.log.Logger;
 import com.github.czyzby.kiwi.log.LoggerService;
+import dev.lyze.retro.Stats;
 import dev.lyze.retro.game.actors.Map;
 import dev.lyze.retro.game.actors.units.Unit;
 import lombok.Getter;
@@ -97,25 +98,22 @@ public class Game extends Stage {
 
                 var unit = pickedIterator.next();
                 if (unit.isDead()) {
-                    logger.info("Unit " + unit + " died");
                     pickedIterator.remove();
                     getActors().removeValue(unit, true);
                     getOtherPlayer(unit.getPlayer()).addCoins(1);
                     continue;
                 }
                 if (unit.getPlayer().isHuman() && unit.getPathPoints().get(unit.getCurrentPoint()).equals(map.getStartPoint())) {
-                    logger.info("Player unit " + unit + " reached enemy base");
                     pickedIterator.remove();
                     getActors().removeValue(unit, true);
-                    player.addCoins(1);
+                    player.addCoins(Stats.COINS_PER_KILL);
                     unitReachedFinish = true;
                     continue;
                 } else if (!unit.getPlayer().isHuman() && unit.getPathPoints().get(unit.getCurrentPoint()).equals(map.getFinishPoint())) {
-                    logger.info("Enemy unit " + unit + " reached player base");
                     pickedIterator.remove();
                     getActors().removeValue(unit, true);
                     player.addHealth(- 1);
-                    enemy.addCoins(1);
+                    enemy.addCoins(Stats.COINS_PER_KILL);
                     unitReachedFinish = true;
                     continue;
                 }
@@ -137,8 +135,8 @@ public class Game extends Stage {
         player.startRound();
         enemy.startRound();
 
-        enemy.addCoins(10);
-        player.addCoins(10);
+        enemy.addCoins(Stats.COINS_PER_ROUND);
+        player.addCoins(Stats.COINS_PER_ROUND);
 
         roundCounter++;
     }
