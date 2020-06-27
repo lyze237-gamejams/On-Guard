@@ -13,7 +13,6 @@ public class UpgradeButton extends Button {
     private static final Logger logger = LoggerService.forClass(UpgradeButton.class);
 
     private final Class<? extends Unit> unit;
-    private int price;
 
     private final BitmapFont numbersFont;
     private Vector2 numberFontCoords;
@@ -24,7 +23,6 @@ public class UpgradeButton extends Button {
         super(game, up, down);
 
         this.unit = unit;
-        this.price = Stats.UPGRADE_PRICE;
 
         numbersFont = game.getAss().getNumbersFont();
 
@@ -35,22 +33,10 @@ public class UpgradeButton extends Button {
     @Override
     protected void setState(boolean state) {
         if (buttonState = state) {
-            if (getButtonFrame() + 1 >= Stats.UPGRADE_AMOUNT)
-                return;
-
-            if (!game.getPlayer().getBoughtUnits().contains(unit))
-                return; // didn't buy yet so don't allow user to upgrade unit
-
-            if (game.getPlayer().subtractCoins(price))
-            {
-                game.getPlayer().getUpgrades().replace(unit, game.getPlayer().getUpgrades().get(unit) + 1);
-                setButtonFrame(getButtonFrame() + 1);
-
+            if (game.getPlayer().upgradeUnit(unit)) {
                 logger.info("Buying upgrade: " + this + " Total: " + game.getPlayer().getUpgrades().get(unit));
                 game.getAss().playRandomSound(game.getAss().getUpgradeButtonSounds());
-
-                if ((price *= 2) > 9)
-                    price = 9;
+                setButtonFrame(getButtonFrame() + 1);
             }
         }
     }
@@ -68,14 +54,13 @@ public class UpgradeButton extends Button {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
 
-        numbersFont.draw(batch, String.valueOf(price), numberFontCoords.x, numberFontCoords.y - (buttonState ? 1 : 0));
+        numbersFont.draw(batch, String.valueOf(game.getPlayer().getUpgradePrice(unit)), numberFontCoords.x, numberFontCoords.y - (buttonState ? 1 : 0));
     }
 
     @Override
     public String toString() {
         return "UpgradeButton{" +
                 "unit=" + unit +
-                ", price=" + price +
                 '}';
     }
 }

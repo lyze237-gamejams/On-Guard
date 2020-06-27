@@ -112,7 +112,7 @@ public class Player {
                         generateNewTarget();
                     break;
                 case UPGRADE:
-                    if (upgradeUnit(subTarget))
+                    if (upgradeUnitAi(subTarget))
                         generateNewTarget();
                     break;
                 case ABILITY:
@@ -170,21 +170,37 @@ public class Player {
         return false;
     }
 
-    public boolean upgradeUnit(Class<? extends Unit> unitClazz) {
+    public int getUpgradePrice(Class<? extends Unit> unitClazz) {
         var price = Stats.UPGRADE_PRICE + upgrades.get(unitClazz) * 2;
         if (price > 9)
             price = 9;
 
-        if (upgrades.get(unitClazz) >= Stats.UPGRADE_AMOUNT) {
+        return price;
+    }
+
+    private boolean upgradeUnitAi(Class<? extends Unit> unitClazz) {
+        if (!boughtUnits.contains(unitClazz)) // didn't buy yet
             return true;
-        }
 
-        upgrades.replace(unitClazz, upgrades.get(unitClazz) + 1);
+        if (upgrades.get(unitClazz) >= Stats.UPGRADE_AMOUNT)
+            return true;
 
-        if (subtractCoins(price)) {
+        return upgradeUnit(unitClazz);
+    }
+
+    public boolean upgradeUnit(Class<? extends Unit> unitClazz) {
+        if (!boughtUnits.contains(unitClazz)) // didn't buy yet
+            return false;
+
+        if (upgrades.get(unitClazz) >= Stats.UPGRADE_AMOUNT)
+            return false;
+
+        if (subtractCoins(getUpgradePrice(unitClazz))) {
+            upgrades.replace(unitClazz, upgrades.get(unitClazz) + 1);
             boughtUnits.add(unitClazz);
             return true;
         }
+
         return false;
     }
 }
