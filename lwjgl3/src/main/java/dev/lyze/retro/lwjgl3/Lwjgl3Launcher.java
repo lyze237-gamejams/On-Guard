@@ -16,9 +16,9 @@ public class Lwjgl3Launcher {
 
 	private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {
 		Lwjgl3ApplicationConfiguration configuration = new Lwjgl3ApplicationConfiguration();
-		configuration.setTitle("RetroTowerdefence");
-		configuration.setWindowedMode(1280, 720);
-		configuration.setWindowIcon("libgdx128.png", "libgdx64.png", "libgdx32.png", "libgdx16.png");
+		configuration.setTitle("On Guard - Libgdx GameJam June 2020");
+		configuration.setWindowedMode(160 * 5, 144 * 5);
+		configuration.setWindowIcon("256.png", "128.png", "48.png", "32.png", "16.png");
 		return configuration;
 	}
 }
