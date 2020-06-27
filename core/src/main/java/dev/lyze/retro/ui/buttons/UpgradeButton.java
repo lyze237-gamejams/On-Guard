@@ -35,7 +35,7 @@ public class UpgradeButton extends Button {
     @Override
     protected void setState(boolean state) {
         if (buttonState = state) {
-            if (getButtonFrame() + 1 >= getButtonFramesCount())
+            if (getButtonFrame() + 1 >= Stats.UPGRADE_AMOUNT)
                 return;
 
             if (!game.getPlayer().getBoughtUnits().contains(unit))

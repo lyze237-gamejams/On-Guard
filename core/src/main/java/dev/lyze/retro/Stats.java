@@ -9,6 +9,10 @@ import java.util.HashMap;
 public class Stats {
     public static int START_HEALTH = 100;
     public static int START_COINS = 20;
+    public static int COINS_PER_KILL = 1;
+    public static int COINS_PER_ROUND = 2;
+
+    public static int UPGRADE_AMOUNT = 5;
 
     public static UnitStats SNAKE = new UnitStats(1, 1, 2, 1);
     public static UnitStats GUARD = new UnitStats(9, 8, 4, 1);
