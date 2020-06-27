@@ -124,7 +124,7 @@ public class Game extends Stage {
             }
 
             if (unitReachedFinish)
-                ass.playRandomSound(ass.getWins());
+                ass.playRandomSound(ass.getWinSounds());
         }
     }
 

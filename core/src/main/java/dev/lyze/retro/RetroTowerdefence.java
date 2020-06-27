@@ -24,7 +24,7 @@ public class RetroTowerdefence extends Game {
 		logger.info("Hoot!");
 
 		ass = new Assets();
-		setScreen(new MenuScreen(this, ass));
+		setScreen(new MenuScreen(this));
 	}
 
 	private void setupLogger() {

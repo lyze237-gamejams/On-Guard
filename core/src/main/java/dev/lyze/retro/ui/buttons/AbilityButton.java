@@ -18,7 +18,7 @@ public class AbilityButton extends Button {
             return;
 
         if (game.getPlayer().subtractCoins(price)) {
-            game.getAss().playRandomSound(game.getAss().getPotionButtons());
+            game.getAss().playRandomSound(game.getAss().getAbilityButtonSounds());
             game.getEnemy().getRoundUnits().forEach(u -> u.damage(1));
         }
     }
