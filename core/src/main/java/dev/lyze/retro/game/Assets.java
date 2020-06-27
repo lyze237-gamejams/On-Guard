@@ -74,6 +74,9 @@ public class Assets {
     @Getter
     private Music mainMenuMusic, gameMenuMusic;
 
+    @Getter
+    private Array<TextureAtlas.AtlasRegion> lyze;
+
     public Assets() {
         setupAssetManager();
         extractTextureRegions();
@@ -130,6 +133,8 @@ public class Assets {
 
         mainMenuBackground = atlas.findRegion("MainMenu/MainMenu");
         gameOverButton = atlas.findRegion("MainMenu/GameOver");
+
+        lyze = atlas.findRegions("MainMenu/Lyze");
 
         meleeSounds = Arrays.stream(MELEE_SOUND_PATHS).map(sound -> assMan.get(sound, Sound.class)).collect(Collectors.toList());
         rangedSounds = Arrays.stream(RANGED_SOUND_PATHS).map(sound -> assMan.get(sound, Sound.class)).collect(Collectors.toList());

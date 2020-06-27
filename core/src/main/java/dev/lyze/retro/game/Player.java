@@ -85,8 +85,6 @@ public class Player {
 
     public void startRound() {
         roundUnitsToSpawn.addAll(boughtUnits);
-
-        Collections.shuffle(roundUnitsToSpawn);
     }
 
     private BotTarget masterTarget = BotTarget.BUY;

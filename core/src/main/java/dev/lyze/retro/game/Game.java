@@ -35,6 +35,9 @@ public class Game extends Stage {
     @Getter
     private int roundCounter;
 
+    private float startRoundTimer;
+    private float startRoundWhen = 3f;
+
     @Getter
     private final Player player, enemy;
 
@@ -58,7 +61,10 @@ public class Game extends Stage {
 
         if (player.getRoundUnitsToSpawn().isEmpty() && enemy.getRoundUnitsToSpawn().isEmpty()
                 && player.getRoundUnits().isEmpty() && enemy.getRoundUnits().isEmpty()) { // field is completely empty
-            startRound();
+            if ((roundCounter < 1 || (startRoundTimer += delta) > startRoundWhen)) {
+                startRound();
+                startRoundTimer = 0;
+            }
         }
 
         var localRoundTickTime = roundTickTime;
