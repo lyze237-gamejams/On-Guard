@@ -64,7 +64,7 @@ runtime {
 		installerName = imageName = appName
 
 		if (OperatingSystem.current().windows) {
-			imageOptions += [ '--win-console'] //, "--icon", file("../assets/icons/Icon.ico") ]
+			//imageOptions += [ "--icon", file("../assets/icons/Icon.ico") ]
 			installerOptions += ['--win-per-user-install', '--win-dir-chooser', '--win-menu', '--win-shortcut', '--win-upgrade-uuid', '93757012-479c-4864-91c8-c47b25c7add8']
 		} else {
 			//imageOptions += ["--icon", file("../assets/icons/Icon-32.png")]
