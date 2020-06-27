@@ -19,7 +19,7 @@ public class UnitButton extends Button {
     protected void setState(boolean state) {
         if (state) {
             if (game.getPlayer().subtractCoins(price)) {
-                game.getAss().playRandomSound(game.getAss().getBuyButtons());
+                game.getAss().playRandomSound(game.getAss().getBuyButtonSounds());
                 game.getPlayer().getBoughtUnits().add(unitClazz);
             }
         }

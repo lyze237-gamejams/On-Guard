@@ -26,7 +26,7 @@ public class AttackBehaviour extends Behaviour {
             if (!otherUnit.isDead()) {
                 if (unit.getGame().getMap().mapCoordsEqualsPixelCoords(nextPathPoint.getX(), nextPathPoint.getY(), (int) otherUnit.getX(), (int) otherUnit.getY())) {
                     logger.info(unit.toString() + " hit " + otherUnit.toString());
-                    unit.getGame().getAss().playRandomSound(unit.getGame().getAss().getMelees());
+                    unit.getGame().getAss().playRandomSound(unit.getGame().getAss().getMeleeSounds());
 
                     otherUnit.damage(damage + unit.getPlayer().getUpgrades().get(unit.getClass()));
 

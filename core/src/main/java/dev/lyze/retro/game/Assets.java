@@ -63,13 +63,13 @@ public class Assets {
     private List<TiledMap> maps;
 
     @Getter
-    private List<Sound> melees, rangedes, coins, wins, buyButtons, upgradeButtons, potionButtons;
+    private List<Sound> meleeSounds, rangedSounds, coinSounds, winSounds, buyButtonSounds, upgradeButtonSounds, abilityButtonSounds;
 
     @Getter @Setter
     private boolean soundMuted;
 
     @Getter
-    private TextureAtlas.AtlasRegion mainMenu, gameOverButton;
+    private TextureAtlas.AtlasRegion mainMenuBackground, gameOverButton;
 
     @Getter
     private Music mainMenuMusic, gameMenuMusic;
@@ -128,16 +128,16 @@ public class Assets {
         hitParticle = atlas.findRegion("Particles/Hit");
         rangedAttackParticle = atlas.findRegion("Particles/Ranged_Attack");
 
-        mainMenu = atlas.findRegion("MainMenu/MainMenu");
+        mainMenuBackground = atlas.findRegion("MainMenu/MainMenu");
         gameOverButton = atlas.findRegion("MainMenu/GameOver");
 
-        melees = Arrays.stream(MELEE_SOUND_PATHS).map(sound -> assMan.get(sound, Sound.class)).collect(Collectors.toList());
-        rangedes = Arrays.stream(RANGED_SOUND_PATHS).map(sound -> assMan.get(sound, Sound.class)).collect(Collectors.toList());
-        coins = Arrays.stream(COIN_SOUND_PATHS).map(sound -> assMan.get(sound, Sound.class)).collect(Collectors.toList());
-        wins = Arrays.stream(WIN_SOUND_PATHS).map(sound -> assMan.get(sound, Sound.class)).collect(Collectors.toList());
-        buyButtons = Arrays.stream(BUY_SOUND_PATHS).map(sound -> assMan.get(sound, Sound.class)).collect(Collectors.toList());
-        upgradeButtons = Arrays.stream(UPGRADE_SOUND_PATHS).map(sound -> assMan.get(sound, Sound.class)).collect(Collectors.toList());
-        potionButtons = Arrays.stream(POTION_SOUND_PATH).map(sound -> assMan.get(sound, Sound.class)).collect(Collectors.toList());
+        meleeSounds = Arrays.stream(MELEE_SOUND_PATHS).map(sound -> assMan.get(sound, Sound.class)).collect(Collectors.toList());
+        rangedSounds = Arrays.stream(RANGED_SOUND_PATHS).map(sound -> assMan.get(sound, Sound.class)).collect(Collectors.toList());
+        coinSounds = Arrays.stream(COIN_SOUND_PATHS).map(sound -> assMan.get(sound, Sound.class)).collect(Collectors.toList());
+        winSounds = Arrays.stream(WIN_SOUND_PATHS).map(sound -> assMan.get(sound, Sound.class)).collect(Collectors.toList());
+        buyButtonSounds = Arrays.stream(BUY_SOUND_PATHS).map(sound -> assMan.get(sound, Sound.class)).collect(Collectors.toList());
+        upgradeButtonSounds = Arrays.stream(UPGRADE_SOUND_PATHS).map(sound -> assMan.get(sound, Sound.class)).collect(Collectors.toList());
+        abilityButtonSounds = Arrays.stream(POTION_SOUND_PATH).map(sound -> assMan.get(sound, Sound.class)).collect(Collectors.toList());
     }
 
     public <T> T get (String fileName) {
@@ -165,7 +165,7 @@ public class Assets {
     private final Random random = new Random();
     public void playRandomSound(List<Sound> sounds) {
         if (!soundMuted)
-            sounds.get(random.nextInt(sounds.size())).play(0.35f);
+            sounds.get(random.nextInt(sounds.size())).play(0.2f);
     }
 
     public void playMusic(Music music) {

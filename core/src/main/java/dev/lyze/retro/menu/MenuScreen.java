@@ -21,7 +21,7 @@ public class MenuScreen extends Stage implements Screen {
 
 		this.ass = towerdefence.getAss();
 
-		addActor(new Image(ass.getMainMenu()));
+		addActor(new Image(ass.getMainMenuBackground()));
 
 		Gdx.input.setInputProcessor(this);
 
