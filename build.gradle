@@ -36,8 +36,7 @@ configure(subprojects) {
 import com.badlogic.gdx.tools.texturepacker.TexturePacker
 task texturePacker {
 	doLast {
-		logger.info "Calling TexturePacker: " + texturePacker
-		TexturePacker.process("assets/input", "assets/atlas", "atlas")
+		TexturePacker.process("${project.rootDir}/assets/input", "${project.rootDir}/assets/atlas", "atlas")
 	}
 }
 
